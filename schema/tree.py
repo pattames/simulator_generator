@@ -1,20 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Literal
 
 class ExpectedAction(BaseModel):
     action_keywords: list[str]
     feedback: str
-    next_node: str
-    penalty: str
+    next: str
+    penalty: Literal["minor", "moderate", "mayor"] | None = None
 
 class DecisionNode(BaseModel):
-    node_type: str
+    type: Literal["decision"]
     stage: str
     available_info: str
-    expected_actions: list[ExpectedAction]
-    hints: list[str]
-
-class Nodes(BaseModel):
-    decision_node: DecisionNode
+    expected_actions: list[ExpectedAction] = Field(min_length=1)
+    hints: list[str] = Field(min_length=1)
 
 class ContextItem(BaseModel):
     label: str
@@ -28,14 +26,14 @@ class Presentation(BaseModel):
 class Metadata(BaseModel):
     domain: str
     topic: str
-    learning_objectives: list[str]
+    learning_objectives: list[str] = Field(min_length=1)
 
 class SimulatorTree(BaseModel):
     simulator_id: str
     metadata: Metadata
     presentation: Presentation
     start_node: str
-    nodes: Nodes
+    nodes: dict[str, DecisionNode]
 
 if __name__ == "__main__":
     import json
