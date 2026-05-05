@@ -1,5 +1,13 @@
 from pydantic import BaseModel
 
+class ContextItem(BaseModel):
+    label: str
+    value: str
+
+class Presentation(BaseModel):
+    intro: str
+    context: list[ContextItem]
+
 class Metadata(BaseModel):
     domain: str
     topic: str
@@ -8,6 +16,7 @@ class Metadata(BaseModel):
 class SimulatorTree(BaseModel):
     simulator_id: str
     metadata: Metadata
+    presentation: Presentation
 
 if __name__ == "__main__":
     import json
