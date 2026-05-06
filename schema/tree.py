@@ -1,6 +1,15 @@
 from pydantic import BaseModel, Field
 from typing import Literal
 
+class ExecutionRules(BaseModel):
+    hint_path_def: str
+    max_hints_per_node: int
+    on_excessive_hints: str
+    off_path_def: str
+    default_off_path_response: str
+    off_path_max_attempts: int
+    on_excessive_off_path: str
+
 class TerminalNode(BaseModel):
     type: Literal["terminal"]
     outcome: Literal["success"]
@@ -53,6 +62,7 @@ class SimulatorTree(BaseModel):
     presentation: Presentation
     start_node: str
     nodes: dict[str, DecisionNode | AccumulatorNode | TerminalNode]
+    execution_rules: ExecutionRules
 
 if __name__ == "__main__":
     import json
