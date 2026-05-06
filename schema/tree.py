@@ -1,6 +1,12 @@
 from pydantic import BaseModel, Field
 from typing import Literal
 
+class TerminalNode(BaseModel):
+    type: Literal["terminal"]
+    outcome: Literal["success"]
+    diagnosis: str | None
+    feedback_template: str
+
 class ComponentFeedback(BaseModel):
     component: str
     feedback: str
@@ -11,14 +17,14 @@ class AccumulatorNode(BaseModel):
     available_info: str
     required_components: list[str] = Field(min_length=1)
     component_feedback: list[ComponentFeedback] = Field(min_length=1)
-    on_complete: Literal["terminal_success"]
+    on_complete: str
     hints: list[str] = Field(min_length=1)
 
 class ExpectedAction(BaseModel):
     action_keywords: list[str]
     feedback: str
     next: str
-    penalty: Literal["minor", "moderate", "mayor"] | None = None
+    penalty: Literal["minor", "moderate", "mayor"] | None
 
 class DecisionNode(BaseModel):
     type: Literal["decision"]
@@ -46,7 +52,7 @@ class SimulatorTree(BaseModel):
     metadata: Metadata
     presentation: Presentation
     start_node: str
-    nodes: dict[str, DecisionNode | AccumulatorNode]
+    nodes: dict[str, DecisionNode | AccumulatorNode | TerminalNode]
 
 if __name__ == "__main__":
     import json
