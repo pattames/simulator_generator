@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Literal
+from typing import Literal, Annotated
 
 class ExecutionRules(BaseModel):
     hint_path_def: str
@@ -42,6 +42,12 @@ class DecisionNode(BaseModel):
     expected_actions: list[ExpectedAction] = Field(min_length=1)
     hints: list[str] = Field(min_length=1)
 
+# Look at the type field first, then parse into the matching class
+NodeUnion = Annotated[
+    DecisionNode | AccumulatorNode | TerminalNode,
+    Field(discriminator="type")
+]
+
 class ContextItem(BaseModel):
     label: str
     value: str
@@ -61,7 +67,7 @@ class SimulatorTree(BaseModel):
     metadata: Metadata
     presentation: Presentation
     start_node: str
-    nodes: dict[str, DecisionNode | AccumulatorNode | TerminalNode]
+    nodes: dict[str, NodeUnion]
     execution_rules: ExecutionRules
 
 if __name__ == "__main__":
