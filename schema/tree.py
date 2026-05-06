@@ -12,8 +12,8 @@ class ExecutionRules(BaseModel):
 
 class TerminalNode(BaseModel):
     type: Literal["terminal"]
-    outcome: Literal["success"]
-    diagnosis: str | None
+    outcome: Literal["success", "failure"]
+    diagnosis: str | None = None
     feedback_template: str
 
 class ComponentFeedback(BaseModel):
@@ -33,7 +33,7 @@ class ExpectedAction(BaseModel):
     action_keywords: list[str]
     feedback: str
     next: str
-    penalty: Literal["minor", "moderate", "mayor"] | None
+    penalty: Literal["minor", "moderate", "major"] | None = None
 
 class DecisionNode(BaseModel):
     type: Literal["decision"]
