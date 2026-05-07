@@ -1,0 +1,136 @@
+{
+  "simulator_id": "auto_engine_no_start_001",
+  "metadata": {
+    "domain": "Diagnóstico mecánico automotriz",
+    "topic": "Diagnóstico de fallas de arranque del motor",
+    "learning_objectives": [
+      "Aplicar diagnóstico sistemático en problemas de arranque",
+      "Diferenciar fallas eléctricas, de combustible y mecánicas",
+      "Interpretar pruebas de presión de combustible"
+    ]
+  },
+  "presentation": {
+    "intro": "Un cliente trae su Honda Civic 2015 con 120,000 km al taller. Reporta que esta mañana el motor giró al intentar arrancar pero no encendió. Cuenta que el día anterior cargó gasolina en una estación nueva con precio sospechosamente bajo. Al girar la llave a posición 'on', se percibe un leve olor a combustible en la cabina.",
+    "context": [
+      {"label": "Vehículo", "value": "Honda Civic 2015, 1.8L gasolina, 120,000 km"},
+      {"label": "Síntoma principal", "value": "Motor cranquea pero no enciende"},
+      {"label": "Historial reciente", "value": "Cargó combustible en estación no habitual el día anterior"}
+    ],
+    "initial_prompt": "¿Cómo abordarías este diagnóstico? ¿Qué revisarías primero?"
+  },
+  "start_node": "n1",
+  "nodes": {
+    "n1": {
+      "type": "decision",
+      "stage": "Inspección inicial y verificación de síntomas",
+      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.",
+      "expected_actions": [
+        {
+          "action_keywords": ["inspección visual", "revisar fugas", "buscar fugas", "checar visual"],
+          "feedback": "Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
+          "next": "n2"
+        },
+        {
+          "action_keywords": ["escuchar bomba", "switch on", "verificar zumbido bomba", "activar switch"],
+          "feedback": "Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
+          "next": "n2"
+        },
+        {
+          "action_keywords": ["scanner", "obd", "código de falla", "lector"],
+          "feedback": "Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
+          "next": "n2",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Antes de conectar herramientas de diagnóstico, ¿qué información puedes obtener con tus sentidos?",
+        "El motor cranquea normalmente — eso ya descarta varios sistemas. ¿Cuáles?"
+      ]
+    },
+    "n2": {
+      "type": "decision",
+      "stage": "Diagnóstico diferencial",
+      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.",
+      "expected_actions": [
+        {
+          "action_keywords": ["sistema combustible", "bomba combustible", "fuel pump", "presión combustible"],
+          "feedback": "Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
+          "next": "n3"
+        },
+        {
+          "action_keywords": ["batería", "alternador", "sistema eléctrico", "cables"],
+          "feedback": "Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
+          "next": "n2",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": ["motor de arranque", "starter", "marcha", "solenoide"],
+          "feedback": "El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
+          "next": "n2",
+          "penalty": "moderate"
+        }
+      ],
+      "hints": [
+        "El motor cranquea pero no enciende. Eso significa que el sistema de arranque funciona — falta otra cosa.",
+        "Para encender, un motor necesita tres cosas: chispa, aire y combustible. ¿Cuál de las tres está fallando según los síntomas?"
+      ]
+    },
+    "n3": {
+      "type": "decision",
+      "stage": "Confirmación diagnóstica",
+      "available_info": "Pruebas disponibles del sistema de combustible.",
+      "expected_actions": [
+        {
+          "action_keywords": ["prueba presión combustible", "manómetro combustible", "test presión", "fuel pressure test"],
+          "feedback": "Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
+          "next": "accumulator"
+        },
+        {
+          "action_keywords": ["inspección visual tanque", "ver tanque", "inspeccionar combustible"],
+          "feedback": "Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
+          "next": "n3",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Necesitas medir directamente lo que sospechas que está fallando. ¿Con qué herramienta mides presión hidráulica de combustible?"
+      ]
+    },
+    "accumulator": {
+      "type": "accumulator",
+      "stage": "Plan de reparación",
+      "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
+      "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
+      "component_feedback": [
+        {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más debes hacer para evitar que la bomba nueva sufra el mismo daño?"},
+        {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Algo más?"},
+        {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. Si tu plan incluye los tres componentes, puedes cerrar el caso."}
+      ],
+      "on_complete": "terminal_success",
+      "hints": [
+        "Reemplazar solo la pieza dañada no es suficiente — hay que tratar la causa y proteger los componentes nuevos.",
+        "Piensa en tres niveles: (1) la pieza fallada, (2) el contaminante que la dañó, (3) los componentes intermedios que también pudieron contaminarse."
+      ]
+    },
+    "terminal_success": {
+      "type": "terminal",
+      "outcome": "success",
+      "diagnosis": "Falla de bomba de combustible por contaminación de gasolina",
+      "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nPuntos fuertes observados:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
+    },
+    "terminal_failure": {
+      "type": "terminal",
+      "outcome": "failure",
+      "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación. Revisa los siguientes puntos:\n{missed_points}\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
+    }
+  },
+  "execution_rules": {
+    "hint_path_def": "The user is engaging with the diagnostic case but their reasoning is incorrect or incomplete",
+    "max_hints_per_node": 3,
+    "on_excessive_hints": "terminal_failure",
+    "off_path_def": "The user is asking about something completely unrelated to the diagnostic case",
+    "default_off_path_response": "Esa pregunta no corresponde a este momento del diagnóstico. Concentrémonos en el caso del Honda Civic.",
+    "off_path_max_attempts": 3,
+    "on_excessive_off_path": "terminal_failure"
+  }
+}
