@@ -42,7 +42,7 @@ class DecisionNode(BaseModel):
     expected_actions: list[ExpectedAction] = Field(min_length=1)
     hints: list[str] = Field(min_length=1)
 
-# Look at the type field first, then parse into the matching class
+# Look at the node's type field first, then parse into the matching class
 NodeUnion = Annotated[
     DecisionNode | AccumulatorNode | TerminalNode,
     Field(discriminator="type")
