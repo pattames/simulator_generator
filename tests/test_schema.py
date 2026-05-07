@@ -1,5 +1,5 @@
 from pathlib import Path
-from schema.tree import SimulatorTree
+from src.schema.tree import SimulatorTree
 
 raw = Path("examples/vet_canine.json").read_text()
 tree = SimulatorTree.model_validate_json(raw)
