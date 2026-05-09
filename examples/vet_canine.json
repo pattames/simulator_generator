@@ -124,10 +124,10 @@
     }
   },
   "execution_rules": {
-	  "hint_path_def": "The user is engaging with the case but their reasoning is incorrect or incomplete",
+	"hint_path_def": "El usuario está participando activamente en el caso pero su razonamiento está incompleto o es incorrecto",
     "max_hints_per_node": 3,
     "on_excessive_hints": "terminal_failure",
-    "off_path_def": "The user is asking about something completely unrelated to the clinical case",
+    "off_path_def": "El usuario está preguntando algo completamente ajeno al caso",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del caso.",
     "off_path_max_attempts": 3,
     "on_excessive_off_path": "terminal_failure"
