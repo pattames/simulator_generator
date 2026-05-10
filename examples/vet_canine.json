@@ -124,7 +124,7 @@
     }
   },
   "execution_rules": {
-	"hint_path_def": "El usuario está participando activamente en el caso pero su razonamiento está incompleto o es incorrecto",
+	"hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
     "on_excessive_hints": "terminal_failure",
     "off_path_def": "El usuario está preguntando algo completamente ajeno al caso",

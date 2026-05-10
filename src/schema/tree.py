@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Annotated, Self
 
 class ExecutionRules(BaseModel):
-    hint_path_def: str
+    hint_path_def: Literal["The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details"]
     max_hints_per_node: int
     on_excessive_hints: str
     off_path_def: str
