@@ -5,7 +5,7 @@ class ExecutionRules(BaseModel):
     hint_path_def: Literal["The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details"]
     max_hints_per_node: int
     on_excessive_hints: str
-    off_path_def: str
+    off_path_def: Literal["The user's message is entirely unrelated to the case"]
     default_off_path_response: str
     off_path_max_attempts: int
     on_excessive_off_path: str
