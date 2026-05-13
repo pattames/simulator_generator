@@ -30,7 +30,7 @@ class AccumulatorNode(BaseModel):
     hints: list[str] = Field(min_length=1)
 
 class ExpectedAction(BaseModel):
-    action_keywords: list[str]
+    action_keywords: list[str] = Field(min_length=1)
     feedback: str
     next: str
     penalty: Literal["minor", "moderate", "major"] | None = None
