@@ -125,10 +125,10 @@
     }
   },
   "execution_rules": {
-    "hint_path_def": "The user is engaging with the diagnostic case but their reasoning is incorrect or incomplete",
+    "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
     "on_excessive_hints": "terminal_failure",
-    "off_path_def": "The user is asking about something completely unrelated to the diagnostic case",
+    "off_path_def": "The user's message is entirely unrelated to the case",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del diagnóstico. Concentrémonos en el caso del Honda Civic.",
     "off_path_max_attempts": 3,
     "on_excessive_off_path": "terminal_failure"

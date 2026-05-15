@@ -2,12 +2,12 @@ from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Annotated, Self
 
 class ExecutionRules(BaseModel):
-    hint_path_def: str
-    max_hints_per_node: int
+    hint_path_def: Literal["The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details"]
+    max_hints_per_node: int = Field(ge=1)
     on_excessive_hints: str
-    off_path_def: str
+    off_path_def: Literal["The user's message is entirely unrelated to the case"]
     default_off_path_response: str
-    off_path_max_attempts: int
+    off_path_max_attempts: int = Field(ge=1)
     on_excessive_off_path: str
 
 class TerminalNode(BaseModel):
@@ -30,7 +30,7 @@ class AccumulatorNode(BaseModel):
     hints: list[str] = Field(min_length=1)
 
 class ExpectedAction(BaseModel):
-    action_keywords: list[str]
+    action_keywords: list[str] = Field(min_length=1)
     feedback: str
     next: str
     penalty: Literal["minor", "moderate", "major"] | None = None
