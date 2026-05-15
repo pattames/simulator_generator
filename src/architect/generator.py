@@ -27,7 +27,7 @@ def generate_tree(user_description: str, max_attempts: int = 3) -> SimulatorTree
             })
         response = client.messages.parse(
             model="claude-haiku-4-5",
-            max_tokens=1600,
+            max_tokens=1600,        # set high to avoid incomplete trees
             system=ARCHITECT_SYSTEM_PROMPT,
             messages=messages,
             output_format=SimulatorTree,
