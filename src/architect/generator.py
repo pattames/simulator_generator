@@ -1,5 +1,8 @@
 from pathlib import Path
 from string import Template
+from anthropic import Anthropic
+from pydantic import ValidationError
+from schema.tree import SimulatorTree
 
 prompt_template = Template(Path("src/architect/prompt.md").read_text())
 ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
@@ -7,4 +10,4 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
     vet_example=Path("examples/vet_canine.json").read_text(),
 )
 
-print(prompt_template)
+client = Anthropic()
