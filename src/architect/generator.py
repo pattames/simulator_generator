@@ -11,3 +11,30 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
 )
 
 client = Anthropic()
+
+def generate_tree(user_description: str, max_attempts: int = 3) -> SimulatorTree:
+    last_error = None
+
+    for attempt in range(max_attempts):
+        messages = [{"role": "user", "content": user_description}]
+        if last_error:
+            messages.append({
+                "role": "user",
+                "content": (
+                    f"The previous tree failed validation with this error:\n"
+                    f"{last_error}\n\nPlease produce a corrected tree."
+                )
+            })
+        response = client.messages.parse(
+            model="claude-haiku-4-5",
+            max_tokens=1600,
+            system=ARCHITECT_SYSTEM_PROMPT,
+            messages=messages,
+            output_format=SimulatorTree,
+        )
+        try:
+            return SimulatorTree.model_validate(response.parsed_output.model_dump())
+        except ValidationError as e:
+            last_error = str(e)
+
+    raise RuntimeError(f"Architect failed after {max_attempts} attempts: {last_error}")
