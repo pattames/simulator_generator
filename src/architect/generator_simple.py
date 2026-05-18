@@ -16,7 +16,7 @@ client = Anthropic()
 
 def generate_tree(user_description: str) -> SimulatorTree:
     response = client.messages.parse(
-        model="claude-sonnet-4-6",
+        model="claude-haiku-4-5",
         max_tokens=16000,        # set high to avoid incomplete trees
         system=ARCHITECT_SYSTEM_PROMPT,
         messages=[

@@ -67,16 +67,7 @@ class SimulatorTree(BaseModel):
     metadata: Metadata
     presentation: Presentation
     start_node: str
-    nodes: dict[str, NodeUnion] = Field(
-        description=(
-            "Dictionary containing ALL nodes of the simulator. MUST contain "
-            "3-5 decision nodes (keyed as 'n1', 'n2', 'n3', etc.), exactly "
-            "one accumulator node (keyed as 'accumulator'), exactly one "
-            "terminal_success node, and exactly one terminal_failure node. "
-            "An empty or near-empty nodes dictionary is invalid — the nodes "
-            "are the core content of the simulator."
-        )
-    )
+    nodes: dict[str, NodeUnion] = Field(min_length=6)
     execution_rules: ExecutionRules
 
 if __name__ == "__main__":
