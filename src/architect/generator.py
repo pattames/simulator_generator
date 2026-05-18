@@ -12,6 +12,7 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
 
 client = Anthropic()
 
+# With multiple attempts to ensure structure and validation against Pydantic's schema
 def generate_tree(user_description: str, max_attempts: int = 3) -> SimulatorTree:
     last_error = None
 
@@ -32,9 +33,25 @@ def generate_tree(user_description: str, max_attempts: int = 3) -> SimulatorTree
             messages=messages,
             output_format=SimulatorTree,
         )
+        parsed = response.parsed_output
+        if parsed is None:
+            last_error = "Model did not return a parseable tree, it doesn't match Pydantic's schema."
+            continue
+        # Catch schema's model_validators errors
         try:
-            return SimulatorTree.model_validate(response.parsed_output.model_dump())
+            return SimulatorTree.model_validate(parsed.model_dump())
         except ValidationError as e:
             last_error = str(e)
 
     raise RuntimeError(f"Architect failed after {max_attempts} attempts: {last_error}")
+
+# To test with user prompt as CLI's argument
+if __name__ == "__main__":
+    import sys
+    import json
+
+    # Avoid index error if argument not provided
+    user_prompt = sys.argv[1] if len(sys.argv) > 1 else input("Pide el simulador que deseas")
+
+    tree = generate_tree(user_prompt)
+    print(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
