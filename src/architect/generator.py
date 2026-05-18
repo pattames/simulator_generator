@@ -3,6 +3,9 @@ from string import Template
 from anthropic import Anthropic
 from pydantic import ValidationError
 from schema.tree import SimulatorTree
+from dotenv import load_dotenv
+
+load_dotenv()
 
 prompt_template = Template(Path("src/architect/prompt.md").read_text())
 ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
