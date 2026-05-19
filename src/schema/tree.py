@@ -66,7 +66,7 @@ class SimulatorTree(BaseModel):
     )
     accumulator: AccumulatorNode
     terminal_success: TerminalSNode
-    termina_failure: TerminalFNode
+    terminal_failure: TerminalFNode
     execution_rules: ExecutionRules
 
 if __name__ == "__main__":
