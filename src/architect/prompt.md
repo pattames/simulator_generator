@@ -18,11 +18,8 @@ $vet_example
 - All structural vocabulary (JSON keys, type tags, enum values, node IDs) must be in English.
 - All user-facing strings (intro, available_info, feedback, hints, stage, diagnosis, feedback_template, default_off_path_response, action_keywords, required_components, learning_objectives) must match the language of the user's query.
 
-**Decision nodes IDs**
-- n{number} (e.g., n1, n2, n3)
-
 **Tree structure**
-- Decision nodes size: 3–5. Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
+- Decision nodes: must be an ordered list of 3-5 nodes, each containing an ID field with the value "n{index+1}" (e.g., n1, n2, n3). Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
 - The accumulator must point to terminal_success via on_complete.
 - Decision nodes should never point directly to terminal_success or terminal_failure nodes via their expected_actions.
 
