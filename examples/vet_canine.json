@@ -17,10 +17,9 @@
     ],
     "initial_prompt": "¿Cómo abordarías este caso? ¿Qué información o pruebas solicitarías primero?"
   },
-  "start_node": "n1",
-  "nodes": {
-    "n1": {
-      "type": "decision",
+  "decision_nodes": [
+    {
+      "id": "n1",
       "stage": "Anamnesis y examen inicial",
       "available_info": "Paciente alerta pero deprimido, mucosas ligeramente pálidas, TLC 2 segundos, temperatura 37.6°C (ligeramente baja), FC 60 lpm (bradicardia relativa).",
       "expected_actions": [
@@ -46,8 +45,8 @@
         "La anamnesis puede revelar patrones que orientan el diagnóstico diferencial."
       ]
     },
-    "n2": {
-      "type": "decision",
+    {
+      "id": "n2",
       "stage": "Diagnóstico diferencial y pruebas",
       "available_info": "Hemograma: leve anemia no regenerativa. Química sanguínea: Na+ 128 mEq/L (bajo), K+ 6.8 mEq/L (alto), relación Na/K = 18.8 (baja), glucosa 58 mg/dL (baja), BUN elevado.",
       "expected_actions": [
@@ -74,8 +73,8 @@
         "Combina: bradicardia + hipotermia + hiponatremia + hiperkalemia + hipoglucemia. ¿Qué eje endocrino involucra todos estos sistemas?"
       ]
     },
-    "n3": {
-      "type": "decision",
+    {
+      "id": "n3",
       "stage": "Confirmación diagnóstica",
       "available_info": "Resultados disponibles: cortisol basal bajo, prueba de estimulación con ACTH muestra respuesta plana (cortisol pre y post-ACTH < 2 μg/dL).",
       "expected_actions": [
@@ -94,42 +93,38 @@
       "hints": [
         "Necesitas una prueba funcional del eje hipotálamo-hipófisis-adrenal, no solo una medición basal."
       ]
-    },
-    "accumulator": {						
-      "type": "accumulator",
-      "stage": "Plan terapéutico",
-		  "available_info": "Has confirmado el diagnóstico de hipoadrenocorticismo primario. El paciente se encuentra estable pero requiere manejo agudo de la crisis addisoniana e inicio de terapia de reemplazo hormonal a largo plazo. Diseña un plan terapéutico completo que aborde tanto la estabilización inmediata como el manejo crónico.",
-		  "required_components": ["fluidoterapia", "glucocorticoide", "mineralocorticoide"],
-		  "component_feedback": [
-		    {"component": "fluidoterapia", "feedback": "Estás en el camino correcto. ¿Qué más incluirías en el manejo agudo y crónico?"},
-		    {"component": "glucocorticoide", "feedback": "Bien. La suplementación con glucocorticoides es esencial. ¿Qué más falta?"},
-		    {"component": "mineralocorticoide", "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo. Si tu plan incluye fluidoterapia, glucocorticoide y mineralocorticoide, puedes cerrar el caso."}
-		  ],
-		  "on_complete": "terminal_success",
-		  "hints": [
-        "El tratamiento tiene dos componentes: manejo agudo de la crisis addisoniana y terapia de reemplazo hormonal crónica.",
-        "Piensa en los tres ejes: volumen, glucocorticoides y mineralocorticoides."
-      ]
-    },
-    "terminal_success": {
-      "type": "terminal",
-      "outcome": "success",
-      "diagnosis": "Hipoadrenocorticismo primario (enfermedad de Addison)",
-      "feedback_template": "Has completado el caso con éxito. Llegaste al diagnóstico correcto de hipoadrenocorticismo primario y propusiste un plan terapéutico adecuado que incluye fluidoterapia, glucocorticoides y mineralocorticoides.\n\nPuntos fuertes observados en tu razonamiento:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias sugeridas para profundizar:\n- Ettinger, Textbook of Veterinary Internal Medicine, cap. sobre Endocrinología adrenal\n- Plumb's Veterinary Drug Handbook, entradas de DOCP y fludrocortisona"
-    },
-    "terminal_failure": {
-      "type": "terminal",
-      "outcome": "failure",
-      "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario. Revisa los siguientes puntos:\n{missed_points}\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
     }
+  ],
+  "accumulator": {						
+    "stage": "Plan terapéutico",
+  	  "available_info": "Has confirmado el diagnóstico de hipoadrenocorticismo primario. El paciente se encuentra estable pero requiere manejo agudo de la crisis addisoniana e inicio de terapia de reemplazo hormonal a largo plazo. Diseña un plan terapéutico completo que aborde tanto la estabilización inmediata como el manejo crónico.",
+  	  "required_components": ["fluidoterapia", "glucocorticoide", "mineralocorticoide"],
+  	  "component_feedback": [
+  	    {"component": "fluidoterapia", "feedback": "Estás en el camino correcto. ¿Qué más incluirías en el manejo agudo y crónico?"},
+  	    {"component": "glucocorticoide", "feedback": "Bien. La suplementación con glucocorticoides es esencial. ¿Qué más falta?"},
+  	    {"component": "mineralocorticoide", "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo. Si tu plan incluye fluidoterapia, glucocorticoide y mineralocorticoide, puedes cerrar el caso."}
+  	  ],
+  	  "on_complete": "terminal_success",
+  	  "hints": [
+      "El tratamiento tiene dos componentes: manejo agudo de la crisis addisoniana y terapia de reemplazo hormonal crónica.",
+      "Piensa en los tres ejes: volumen, glucocorticoides y mineralocorticoides."
+    ]
   },
+  "terminal_success": {
+    "outcome": "success",
+    "diagnosis": "Hipoadrenocorticismo primario (enfermedad de Addison)",
+    "feedback_template": "Has completado el caso con éxito. Llegaste al diagnóstico correcto de hipoadrenocorticismo primario y propusiste un plan terapéutico adecuado que incluye fluidoterapia, glucocorticoides y mineralocorticoides.\n\nPuntos fuertes observados en tu razonamiento:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias sugeridas para profundizar:\n- Ettinger, Textbook of Veterinary Internal Medicine, cap. sobre Endocrinología adrenal\n- Plumb's Veterinary Drug Handbook, entradas de DOCP y fludrocortisona"
+  },
+  "terminal_failure": {
+    "type": "terminal",
+    "outcome": "failure",
+    "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario. Revisa los siguientes puntos:\n{missed_points}\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
+  }
   "execution_rules": {
 	"hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
-    "on_excessive_hints": "terminal_failure",
     "off_path_def": "The user's message is entirely unrelated to the case",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del caso.",
     "off_path_max_attempts": 3,
-    "on_excessive_off_path": "terminal_failure"
   }
 }

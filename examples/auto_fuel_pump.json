@@ -18,10 +18,9 @@
     ],
     "initial_prompt": "¿Cómo abordarías este diagnóstico? ¿Qué revisarías primero?"
   },
-  "start_node": "n1",
-  "nodes": {
-    "n1": {
-      "type": "decision",
+  "decision_nodes": [
+    {
+      "id": "n1",
       "stage": "Inspección inicial y verificación de síntomas",
       "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.",
       "expected_actions": [
@@ -47,8 +46,8 @@
         "El motor cranquea normalmente — eso ya descarta varios sistemas. ¿Cuáles?"
       ]
     },
-    "n2": {
-      "type": "decision",
+    {
+      "id": "n2",
       "stage": "Diagnóstico diferencial",
       "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.",
       "expected_actions": [
@@ -75,8 +74,8 @@
         "Para encender, un motor necesita tres cosas: chispa, aire y combustible. ¿Cuál de las tres está fallando según los síntomas?"
       ]
     },
-    "n3": {
-      "type": "decision",
+    {
+      "id": "n3",
       "stage": "Confirmación diagnóstica",
       "available_info": "Pruebas disponibles del sistema de combustible.",
       "expected_actions": [
@@ -95,42 +94,37 @@
       "hints": [
         "Necesitas medir directamente lo que sospechas que está fallando. ¿Con qué herramienta mides presión hidráulica de combustible?"
       ]
-    },
-    "accumulator": {
-      "type": "accumulator",
-      "stage": "Plan de reparación",
-      "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
-      "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
-      "component_feedback": [
-        {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más debes hacer para evitar que la bomba nueva sufra el mismo daño?"},
-        {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Algo más?"},
-        {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. Si tu plan incluye los tres componentes, puedes cerrar el caso."}
-      ],
-      "on_complete": "terminal_success",
-      "hints": [
-        "Reemplazar solo la pieza dañada no es suficiente — hay que tratar la causa y proteger los componentes nuevos.",
-        "Piensa en tres niveles: (1) la pieza fallada, (2) el contaminante que la dañó, (3) los componentes intermedios que también pudieron contaminarse."
-      ]
-    },
-    "terminal_success": {
-      "type": "terminal",
-      "outcome": "success",
-      "diagnosis": "Falla de bomba de combustible por contaminación de gasolina",
-      "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nPuntos fuertes observados:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
-    },
-    "terminal_failure": {
-      "type": "terminal",
-      "outcome": "failure",
-      "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación. Revisa los siguientes puntos:\n{missed_points}\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
     }
+  ],
+  "accumulator": {
+    "stage": "Plan de reparación",
+    "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
+    "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
+    "component_feedback": [
+      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más debes hacer para evitar que la bomba nueva sufra el mismo daño?"},
+      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Algo más?"},
+      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. Si tu plan incluye los tres componentes, puedes cerrar el caso."}
+    ],
+    "on_complete": "terminal_success",
+    "hints": [
+      "Reemplazar solo la pieza dañada no es suficiente — hay que tratar la causa y proteger los componentes nuevos.",
+      "Piensa en tres niveles: (1) la pieza fallada, (2) el contaminante que la dañó, (3) los componentes intermedios que también pudieron contaminarse."
+    ]
+  },
+  "terminal_success": {
+    "outcome": "success",
+    "diagnosis": "Falla de bomba de combustible por contaminación de gasolina",
+    "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nPuntos fuertes observados:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
+  },
+  "terminal_failure": {
+    "outcome": "failure",
+    "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación. Revisa los siguientes puntos:\n{missed_points}\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
   },
   "execution_rules": {
     "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
-    "on_excessive_hints": "terminal_failure",
     "off_path_def": "The user's message is entirely unrelated to the case",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del diagnóstico. Concentrémonos en el caso del Honda Civic.",
-    "off_path_max_attempts": 3,
-    "on_excessive_off_path": "terminal_failure"
+    "off_path_max_attempts": 3
   }
 }
