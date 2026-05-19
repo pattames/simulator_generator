@@ -118,12 +118,12 @@
   "terminal_failure": {
     "outcome": "failure",
     "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario. Revisa los siguientes puntos:\n{missed_points}\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
-  }
+  },
   "execution_rules": {
 	"hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
     "off_path_def": "The user's message is entirely unrelated to the case",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del caso.",
-    "off_path_max_attempts": 3,
+    "off_path_max_attempts": 3
   }
 }

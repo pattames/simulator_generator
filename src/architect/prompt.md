@@ -15,15 +15,18 @@ $vet_example
 ## Design rules
 
 **Language**
-- All structural vocabulary (JSON keys, type tags, enum values, node IDs) must be in English.
+- All structural vocabulary (JSON keys, enum values, node IDs) must be in English.
 - All user-facing strings (intro, available_info, feedback, hints, stage, diagnosis, feedback_template, default_off_path_response, action_keywords, required_components, learning_objectives) must match the language of the user's query.
 
 **Tree structure**
-- Decision nodes: must be an ordered list of 3-5 nodes, each containing an ID field with the value "n{index+1}" (e.g., n1, n2, n3). Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
+- Includes explicit node fields: decision_nodes (a list of decision nodes), accumulator (single object), terminal_success (single object), and terminal_failure (single object).
+- Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
 - The accumulator must point to terminal_success via on_complete.
 - Decision nodes should never point directly to terminal_success or terminal_failure nodes via their expected_actions.
 
 **Decision nodes**
+- Must be an ordered list of 3-5 nodes
+- Each decision node has an id field following the pattern n1, n2, n3, …, matching its position in the list.
 - For each, include 2–4 expected_actions: at least one correct path (no penalty, advances to the next node) and one or more plausible wrong answers with appropriate penalties that loop back to the same node.
 - Penalty levels:
   - minor — on-topic but suboptimal sequencing or premature step

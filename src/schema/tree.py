@@ -61,7 +61,7 @@ class SimulatorTree(BaseModel):
     metadata: Metadata
     presentation: Presentation
     decision_nodes: list[DecisionNode] = Field(
-        min_length=2,
+        min_length=3,
         description="Ordered list of 3-5 decision nodes representing the case's reasoning stages."
     )
     accumulator: AccumulatorNode
