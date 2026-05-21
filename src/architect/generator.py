@@ -3,6 +3,8 @@ from string import Template
 from anthropic import Anthropic
 from schema.tree import SimulatorTree
 from dotenv import load_dotenv
+import sys
+import json
 
 load_dotenv()
 
@@ -16,7 +18,7 @@ client = Anthropic()
 
 def generate_tree(user_description: str) -> SimulatorTree:
     response = client.messages.parse(
-        model="claude-haiku-4-5",
+        model="claude-sonnet-4-6",
         max_tokens=16000,        # set high to avoid incomplete trees
         system=ARCHITECT_SYSTEM_PROMPT,
         messages=[
@@ -31,9 +33,6 @@ def generate_tree(user_description: str) -> SimulatorTree:
 
 # To test with user prompt as CLI's argument
 if __name__ == "__main__":
-    import sys
-    import json
-
     user_prompt = sys.argv[1]
 
     tree = generate_tree(user_prompt)
