@@ -15,22 +15,18 @@ $vet_example
 ## Design rules
 
 **Language**
-- All structural vocabulary (JSON keys, type tags, enum values, node IDs) must be in English.
+- All structural vocabulary (JSON keys, enum values, node IDs) must be in English.
 - All user-facing strings (intro, available_info, feedback, hints, stage, diagnosis, feedback_template, default_off_path_response, action_keywords, required_components, learning_objectives) must match the language of the user's query.
 
-**Node IDs**
-- Decision nodes: n{number}, e.g., n1, n2, n3
-- Accumulator: exactly "accumulator"
-- Terminals: exactly "terminal_success" and "terminal_failure"
-
 **Tree structure**
-- Must contain at least 1 decision node, exactly 1 accumulator, exactly 1 terminal_success, and exactly 1 terminal_failure.
-- Typical size: 3–5 decision nodes plus the accumulator. Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
-- The accumulator must always be the final non-terminal node and must point to terminal_success via on_complete.
-- start_node must reference the first decision node.
-- Decision nodes should never point directly to terminal nodes via their expected_actions. Failure is reached only via execution_rules (excessive hints or off-path responses).
+- Includes explicit node fields: decision_nodes (a list of decision nodes), accumulator (single object), terminal_success (single object), and terminal_failure (single object).
+- Each decision node should reflect a meaningful reasoning stage in the domain, not padding.
+- The accumulator must point to terminal_success via on_complete.
+- Decision nodes should never point directly to terminal_success or terminal_failure nodes via their expected_actions.
 
 **Decision nodes**
+- Must be an ordered list of 3-5 nodes
+- Each decision node has an id field following the pattern n1, n2, n3, …, matching its position in the list.
 - For each, include 2–4 expected_actions: at least one correct path (no penalty, advances to the next node) and one or more plausible wrong answers with appropriate penalties that loop back to the same node.
 - Penalty levels:
   - minor — on-topic but suboptimal sequencing or premature step
@@ -50,9 +46,6 @@ $vet_example
 The following strings describe when a hint should be offered to the user and when the user has gone off path. Both strings must appear exactly as written:
 - hint_path_def: "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details"
 - off_path_def: "The user's message is entirely unrelated to the case"
-
-The on_excessive_hints and on_excessive_off_path fields must both equal 
-"terminal_failure".
 
 **Quality**
 - Cases should reflect realistic, domain-appropriate situations.
