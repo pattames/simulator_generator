@@ -69,6 +69,19 @@ class SimulatorTree(BaseModel):
     terminal_failure: TerminalFNode
     execution_rules: ExecutionRules
 
+    # Takes the reference to the node and returns the node itself
+    def resolve(self, ref: str) -> DecisionNode | AccumulatorNode | TerminalSNode | TerminalFNode:
+        if ref == "accumulator":
+            return self.accumulator
+        if ref == "terminal_success":
+            return self.terminal_success
+        if ref == "terminal_failure":
+            return self.terminal_failure
+        for node in self.decision_nodes:
+            if node.id == ref:
+                return node
+        raise ValueError(f"Unknown node reference: {ref!r}")
+
 if __name__ == "__main__":
     import json
     schema = SimulatorTree.model_json_schema()
