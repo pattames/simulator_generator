@@ -16,7 +16,7 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
 
 client = Anthropic()
 
-def generate_tree(user_description: str) -> SimulatorTree:
+def generate_tree(user_description: str) -> SimulatorTree | None:
     response = client.messages.parse(
         model="claude-sonnet-4-6",
         max_tokens=16000,        # set high to avoid incomplete trees
@@ -24,7 +24,7 @@ def generate_tree(user_description: str) -> SimulatorTree:
         messages=[
             {
                 "role": "user",
-                "content": f"{user_description}"
+                "content": user_description
             }
         ],
         output_format=SimulatorTree,
@@ -33,7 +33,16 @@ def generate_tree(user_description: str) -> SimulatorTree:
 
 # To test with user prompt as CLI's argument
 if __name__ == "__main__":
+    # Handle user prompt
+    if len(sys.argv) != 2:
+        print("Program needs a single prompt to be passed as an argument")
+        sys.exit(1)
     user_prompt = sys.argv[1]
 
+    # Handle tree
     tree = generate_tree(user_prompt)
+    if tree is None:
+        print("Tree wasn't generated properly")
+        sys.exit(1)
+
     print(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))

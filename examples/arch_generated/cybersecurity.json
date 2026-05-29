@@ -1,0 +1,351 @@
+{
+  "simulator_id": "ransomware_ir_enterprise_001",
+  "metadata": {
+    "domain": "Seguridad informática — Respuesta a incidentes",
+    "topic": "Respuesta a incidentes de ransomware en entornos empresariales",
+    "learning_objectives": [
+      "Aplicar el proceso estructurado de respuesta a incidentes (identificación, contención, erradicación, recuperación)",
+      "Identificar indicadores de compromiso (IoCs) y vectores de infección en un ataque de ransomware",
+      "Tomar decisiones de contención que minimicen el impacto operacional sin destruir evidencia forense",
+      "Evaluar y priorizar la recuperación de sistemas críticos según el impacto de negocio",
+      "Diseñar un plan de comunicación y remediación post-incidente"
+    ]
+  },
+  "presentation": {
+    "intro": "Son las 02:47 AM del lunes. Recibes una alerta crítica del SIEM: múltiples servidores del datacenter están generando alertas de alto volumen de escritura en disco y modificación masiva de extensiones de archivo. El NOC reporta que varios empleados del turno nocturno no pueden acceder a sus archivos y ven una nota en el escritorio llamada 'YOUR_FILES_ARE_ENCRYPTED.txt'. La empresa es una firma de servicios financieros con 1,200 empleados. El CISO está en línea esperando tu evaluación inicial.",
+    "context": [
+      {
+        "label": "Organización",
+        "value": "Firma de servicios financieros, 1,200 empleados, operación 24/7"
+      },
+      {
+        "label": "Síntomas iniciales",
+        "value": "Alertas de escritura masiva en disco, extensiones de archivos modificadas, nota de rescate visible en estaciones afectadas"
+      },
+      {
+        "label": "Hora del incidente",
+        "value": "02:47 AM — ventana de bajo tráfico de red"
+      },
+      {
+        "label": "Infraestructura relevante",
+        "value": "Active Directory on-premise, VMware vSphere, sistemas de core bancario, backups en NAS y cinta"
+      },
+      {
+        "label": "Stakeholders activos",
+        "value": "CISO en línea, NOC en alerta, equipo de TI disponible"
+      }
+    ],
+    "initial_prompt": "Eres el analista líder de respuesta a incidentes. El CISO te pregunta: '¿Cuál es tu evaluación inicial y qué hacemos primero?' ¿Cómo respondes y qué acciones tomas de inmediato?"
+  },
+  "decision_nodes": [
+    {
+      "id": "n1",
+      "stage": "Identificación y triaje inicial del incidente",
+      "available_info": "Alertas del SIEM muestran actividad inusual desde hace aproximadamente 47 minutos. Logs disponibles en el SIEM: múltiples hosts generando escrituras masivas en disco (>500 MB/min), renombrado de archivos con extensión '.locked_fx', conexiones salientes a IP externa 185.220.101.47 (TOR exit node conocido) desde el servidor FS-01. NOC reporta 14 estaciones afectadas confirmadas y 3 servidores de archivos con síntomas. El servidor de Active Directory y el core bancario aún no reportan síntomas visibles.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "definir alcance",
+            "determinar alcance",
+            "identificar sistemas afectados",
+            "mapear sistemas comprometidos",
+            "triaje",
+            "triage",
+            "cuántos sistemas",
+            "inventario de afectados"
+          ],
+          "feedback": "Correcto. Antes de actuar, necesitas saber con qué te enfrentas. Tu triaje revela: 14 estaciones de trabajo cifradas, 3 servidores de archivos activamente cifrando (FS-01, FS-02, FS-03), conexión activa C2 desde FS-01. Active Directory (DC-01, DC-02) y servidores de core bancario aún sin síntomas pero en la misma VLAN que FS-01. El cifrado lleva ~47 minutos activo.",
+          "next": "n2",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "pagar rescate",
+            "negociar rescate",
+            "contactar atacantes",
+            "rescate"
+          ],
+          "feedback": "Pagar el rescate no es una acción de triaje inicial y puede tener implicaciones legales y operativas graves. Además, no garantiza la recuperación de los datos. En este momento, la prioridad es contener el daño activo. Volvamos al triaje: ¿qué necesitas saber antes de actuar?",
+          "next": "n1",
+          "penalty": "major"
+        },
+        {
+          "action_keywords": [
+            "apagar todos los sistemas",
+            "apagar todo",
+            "desconectar toda la red",
+            "formatear",
+            "wipe"
+          ],
+          "feedback": "Apagar todo indiscriminadamente detendría el cifrado, pero destruirías evidencia forense volátil crítica (procesos en memoria, conexiones activas, artefactos RAM) y podrías dañar sistemas no afectados. Además, en una operación financiera 24/7, esto tiene impacto operacional severo. Primero necesitas definir el alcance real del incidente.",
+          "next": "n1",
+          "penalty": "moderate"
+        },
+        {
+          "action_keywords": [
+            "revisar logs",
+            "analizar logs",
+            "consultar siem",
+            "revisar alertas",
+            "correlacionar eventos",
+            "ioc",
+            "indicadores de compromiso"
+          ],
+          "feedback": "Buena iniciativa analítica. Los logs del SIEM revelan el patient zero: FS-01 inició las conexiones C2 hace 52 minutos, justo después de que un usuario del grupo 'Finanzas' abriera un adjunto de correo. La propagación lateral usó credenciales administrativas comprometidas mediante pass-the-hash. Tienes información valiosa, pero aún necesitas definir el alcance completo antes de contener.",
+          "next": "n2",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Antes de tomar cualquier acción de contención, el equipo de IR necesita responder: ¿cuántos sistemas están afectados, cuáles son críticos y cuál es el vector de propagación activo?",
+        "Mira los datos del SIEM: hay patrones de escritura en disco, conexiones salientes y una línea temporal. ¿Qué te dice eso sobre el alcance y el estado actual del ataque?",
+        "El Active Directory y el core bancario aún no tienen síntomas — eso importa muchísimo para priorizar. ¿Qué implica que el ransomware esté en la misma red que esos sistemas?"
+      ]
+    },
+    {
+      "id": "n2",
+      "stage": "Contención del ataque",
+      "available_info": "Alcance confirmado: 14 estaciones cifradas (no críticas), 3 servidores de archivos activamente cifrando (impacto alto), conexión C2 activa desde FS-01 hacia IP TOR, propagación lateral mediante credenciales de administrador comprometidas. Active Directory (DC-01, DC-02) aún limpio. Core bancario en VLAN separada pero con tráfico hacia FS-01 en logs. Backups en NAS conectado a red — estado desconocido. Tiempo transcurrido desde detección: 18 minutos.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "aislar servidores afectados",
+            "segmentar red",
+            "aislar vlan",
+            "desconectar segmento",
+            "network isolation",
+            "aislar fs-01",
+            "bloquear propagación",
+            "contener propagación"
+          ],
+          "feedback": "Excelente decisión. Aislar los segmentos de red afectados es la acción de contención prioritaria. Ejecutas: (1) bloqueo de tráfico desde/hacia FS-01, FS-02, FS-03 en el firewall perimetral y switches de core, (2) bloqueo de la IP C2 185.220.101.47 y todo tráfico saliente a rangos TOR. El cifrado en los servidores de archivos se detiene. El AD y el core bancario quedan protegidos. ¿Qué más debes hacer en esta fase?",
+          "next": "n3",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "deshabilitar cuentas comprometidas",
+            "resetear contraseñas",
+            "deshabilitar credenciales",
+            "revocar accesos",
+            "bloquear usuario",
+            "deshabilitar cuenta admin"
+          ],
+          "feedback": "Muy buena acción complementaria. Deshabilitar las credenciales administrativas comprometidas corta el vector de propagación lateral. Sin embargo, hacerlo sin antes aislar la red permite que el ransomware siga cifrando durante el tiempo que tarda en propagarse. La contención de red debe ser simultánea o previa. Combina ambas acciones.",
+          "next": "n3",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "restaurar backup",
+            "recuperar backup",
+            "iniciar recuperación",
+            "restore"
+          ],
+          "feedback": "Es prematuro iniciar la recuperación sin antes contener el ataque. Si restauras backups mientras el ransomware sigue activo en la red, los sistemas restaurados serán re-infectados en minutos. Además, el NAS de backups podría estar comprometido — necesitas verificarlo antes de usarlo como fuente de recuperación.",
+          "next": "n2",
+          "penalty": "moderate"
+        },
+        {
+          "action_keywords": [
+            "preservar evidencia",
+            "memoria ram",
+            "dump de memoria",
+            "captura forense",
+            "snapshot",
+            "imagen forense",
+            "forense"
+          ],
+          "feedback": "Excelente conciencia forense. Capturar memoria RAM y snapshots de VMs de los sistemas afectados antes de apagarlos preserva artefactos críticos: proceso del ransomware, claves de cifrado en memoria, conexiones de red activas. Hazlo en paralelo con la contención de red — no en lugar de ella.",
+          "next": "n3",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "El ransomware se está propagando activamente usando credenciales comprometidas. Hay dos vectores activos: la conexión C2 y el movimiento lateral. ¿Cómo los cortas simultáneamente?",
+        "Piensa en capas: red, identidad, endpoint. ¿En qué capa actúas primero para detener el daño más rápido?",
+        "El NAS de backups está en la red y su estado es desconocido. ¿Qué implica eso para tus decisiones de contención?"
+      ]
+    },
+    {
+      "id": "n3",
+      "stage": "Análisis forense e identificación del vector de entrada",
+      "available_info": "Red contenida. Sistemas FS-01, FS-02, FS-03 aislados. Credenciales administrativas comprometidas deshabilitadas. Estado de backups: NAS conectado durante el ataque — requiere verificación. Evidencia disponible para análisis: logs de correo del servidor Exchange, logs de proxy web, artefactos del endpoint en estaciones afectadas, memoria RAM capturada de FS-01 (si se solicitó en n2), logs de autenticación de Active Directory.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "analizar logs de correo",
+            "revisar exchange",
+            "phishing",
+            "correo malicioso",
+            "adjunto malicioso",
+            "email analysis",
+            "vector de entrada",
+            "origen del ataque",
+            "patient zero"
+          ],
+          "feedback": "Correcto. El análisis de logs de Exchange revela el vector inicial: a las 01:55 AM, un usuario del departamento de Finanzas (jgomez@empresa.com) abrió un adjunto 'Factura_Urgente_Nov2024.xlsm' enviado desde un dominio typosquatted (empresa-proveed0r.com). El macro ejecutó un PowerShell dropper que descargó el payload de ransomware y volcó credenciales LSASS. Puedes identificar todos los destinatarios del mismo correo para verificar exposición adicional.",
+          "next": "n4",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "analizar memoria ram",
+            "volatility",
+            "análisis de memoria",
+            "memory forensics",
+            "procesos maliciosos",
+            "artefactos en memoria"
+          ],
+          "feedback": "Buen trabajo forense. El análisis de memoria de FS-01 con Volatility revela: proceso 'svchost.exe' inyectado con código malicioso, claves de cifrado parciales en memoria (útil para intentar descifrado), y el C2 callback cada 300 segundos. Esto es evidencia valiosa. Para cerrar el análisis del vector de entrada, necesitas también identificar cómo llegó el ransomware al primer sistema comprometido.",
+          "next": "n3",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "analizar logs de autenticación",
+            "revisar ad logs",
+            "event log",
+            "4624",
+            "4672",
+            "pass the hash",
+            "movimiento lateral",
+            "lateral movement"
+          ],
+          "feedback": "Muy buen análisis. Los logs de AD muestran el patrón de movimiento lateral: desde jgomez-ws01 (estación de trabajo) hacia FS-01 usando credenciales de administrador de dominio a las 02:01 AM, luego propagación a FS-02 y FS-03. Esto confirma el movimiento lateral pero aún necesitas identificar el vector de entrada inicial — ¿cómo llegó el ransomware a jgomez-ws01?",
+          "next": "n3",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "revisar proxy",
+            "logs de web",
+            "tráfico web",
+            "descarga maliciosa",
+            "url maliciosa"
+          ],
+          "feedback": "Los logs de proxy muestran descargas sospechosas desde dominios de hosting temporal, pero el payload principal no vino vía web directamente. Esto es evidencia complementaria útil. El vector primario de entrada fue por otro canal — revisa los logs de correo electrónico para encontrarlo.",
+          "next": "n3",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Tienes múltiples fuentes de evidencia disponibles. El objetivo ahora es reconstruir la cadena de ataque completa: ¿por dónde entró, cómo se propagó, qué comprometió?",
+        "El ataque comenzó ~52 minutos antes de tu detección. Hay una estación de trabajo de origen. ¿Qué logs te dicen qué pasó en esa estación entre las 01:50 y las 02:05 AM?",
+        "Los ataques de ransomware empresarial casi siempre comienzan con un vector de ingreso humano. Correo, web, VPN — ¿cuál de esas fuentes de log revisarías primero?"
+      ]
+    },
+    {
+      "id": "n4",
+      "stage": "Evaluación de backups y estrategia de recuperación",
+      "available_info": "Vector confirmado: phishing con macro malicioso → volcado de credenciales LSASS → movimiento lateral → cifrado masivo. Sistemas cifrados: 14 workstations, 3 file servers (FS-01, FS-02, FS-03). Sistemas críticos intactos: AD, core bancario. Estado de backups: NAS (network-attached, posiblemente expuesto durante 47 min de ataque activo), cintas offsite (último backup: viernes 23:00, actualmente en bóveda externa), snapshots de VMware (frecuencia: cada 4 horas, último snapshot limpio estimado: domingo 22:00).",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "verificar integridad de backups",
+            "validar backups",
+            "comprobar backups",
+            "checar backups",
+            "backup integrity",
+            "verificar nas",
+            "estado del nas",
+            "backups comprometidos"
+          ],
+          "feedback": "Decisión crítica correcta. Verificas el NAS antes de usarlo: el análisis revela que el ransomware cifró directorios de backup en el NAS a las 02:31 AM — 16 minutos antes de la detección. Los backups en NAS están comprometidos e inutilizables. Los snapshots de VMware en el datastore están intactos (el datastore no estaba montado en los servidores afectados). Las cintas offsite son la fuente más confiable pero requieren transporte desde la bóveda (ETA: 3-4 horas). Tienes una decisión de recuperación que tomar.",
+          "next": "accumulator",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "usar backup nas",
+            "restaurar desde nas",
+            "recuperar desde nas",
+            "iniciar restore desde nas"
+          ],
+          "feedback": "Error crítico de proceso. Antes de usar cualquier backup como fuente de recuperación, debes verificar su integridad — especialmente cuando el NAS estuvo conectado a la red durante el ataque activo. Si restauras desde backups comprometidos, propagarás el problema. Verifica primero.",
+          "next": "n4",
+          "penalty": "major"
+        },
+        {
+          "action_keywords": [
+            "solicitar cintas",
+            "traer cintas offsite",
+            "recuperar cintas",
+            "cintas de backup",
+            "tape backup"
+          ],
+          "feedback": "Las cintas offsite son una opción válida y probablemente confiables ya que estaban físicamente aisladas. Sin embargo, primero debes verificar qué otras fuentes de backup tienes disponibles y en qué estado — podrías tener opciones más rápidas que esperar 3-4 horas. Haz un inventario completo de fuentes de recuperación antes de elegir.",
+          "next": "n4",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "snapshots vmware",
+            "vmware snapshot",
+            "snapshot",
+            "veeam",
+            "recuperación de vm",
+            "vm recovery"
+          ],
+          "feedback": "Buena evaluación. Los snapshots de VMware son una opción de recuperación rápida. Pero primero necesitas verificar si el datastore donde residen fue alcanzado por el ransomware durante el ataque. No asumas que están intactos — verifica.",
+          "next": "n4",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "El NAS estuvo conectado a la red durante al menos 47 minutos mientras el ransomware estaba activo. ¿Cuál es la primera pregunta que debes responder antes de usarlo para recuperación?",
+        "Tienes tres fuentes de backup potenciales: NAS, cintas offsite y snapshots de VMware. Cada una tiene diferentes características de velocidad, confiabilidad y riesgo de compromiso. ¿Cuál es el proceso correcto para elegir la fuente de recuperación?"
+      ]
+    }
+  ],
+  "accumulator": {
+    "stage": "Plan de remediación, recuperación y mejora continua",
+    "available_info": "El ataque está contenido. Vector identificado: phishing macro → volcado de credenciales → movimiento lateral → cifrado. Backups NAS comprometidos, snapshots VMware intactos, cintas offsite disponibles en 3-4 horas. El CISO necesita un plan integral que cubra: (1) la recuperación ordenada de sistemas, (2) las acciones de erradicación para garantizar que el ransomware no persista, (3) las medidas preventivas inmediatas para evitar reinfección, y (4) el plan de comunicación con reguladores y stakeholders. Diseña ese plan completo.",
+    "required_components": [
+      "erradicación y hardening",
+      "plan de recuperación priorizado",
+      "comunicación y reporte regulatorio",
+      "mejoras preventivas post-incidente"
+    ],
+    "component_feedback": [
+      {
+        "component": "erradicación y hardening",
+        "feedback": "Bien. La erradicación debe incluir: reimagen completa de sistemas afectados (no solo eliminar el ransomware), reset de todas las credenciales administrativas de dominio, revisión y purga de cuentas con privilegios excesivos, y aplicación de reglas de firewall para bloquear rangos TOR y C2 conocidos. ¿Qué más incluye tu plan?"
+      },
+      {
+        "component": "plan de recuperación priorizado",
+        "feedback": "Correcto. La recuperación debe ser priorizada por criticidad: primero AD y core bancario (verificar integridad aunque no mostraron síntomas), luego servidores de archivos críticos desde snapshots VMware, luego workstations. La recuperación completa desde cero reduce el riesgo de persistencia de malware. ¿Qué otros elementos cubre tu plan?"
+      },
+      {
+        "component": "comunicación y reporte regulatorio",
+        "feedback": "Importante. Como firma financiera, tienes obligaciones regulatorias de reporte (CNBV, reguladores locales, potencialmente clientes afectados según normativa). El equipo legal y el CISO deben coordinar la notificación dentro de los plazos reglamentarios. ¿Qué medidas preventivas propones?"
+      },
+      {
+        "component": "mejoras preventivas post-incidente",
+        "feedback": "Excelente. Las mejoras deben abordar las brechas que permitieron el ataque: (1) protección anti-macro y sandboxing de correo, (2) implementación de MFA para cuentas administrativas, (3) segmentación de red y backups offline/inmutables, (4) ejercicios de simulación de IR. Si tu plan cubre erradicación, recuperación priorizada, comunicación regulatoria y mejoras preventivas, has completado el caso."
+      }
+    ],
+    "on_complete": "terminal_success",
+    "hints": [
+      "Un plan de IR completo tiene cuatro fases post-contención: erradicación, recuperación, lecciones aprendidas y mejora continua. ¿Cuál es el orden correcto y qué incluye cada una?",
+      "Como firma financiera, tienes obligaciones legales y regulatorias además de las técnicas. ¿A quién debes notificar y en qué plazo?",
+      "El mismo vector que permitió este ataque podría usarse mañana. ¿Qué controles técnicos y de proceso habrían detenido el ataque antes de que llegara a cifrar archivos?"
+    ]
+  },
+  "terminal_success": {
+    "outcome": "success",
+    "diagnosis": "Ransomware de tipo human-operated distribuido vía spear-phishing con macro malicioso, propagación lateral por credenciales comprometidas (LSASS dump), cifrado masivo de servidores de archivos con conexión C2 a infraestructura TOR",
+    "feedback_template": "Has completado el incidente de ransomware con éxito. Tu respuesta demostró un razonamiento sistemático alineado con marcos de referencia como NIST SP 800-61 y MITRE ATT&CK.\n\nPuntos fuertes en tu respuesta:\n{strengths}\n\nÁreas de mejora identificadas:\n{improvements}\n\nTTPs de MITRE ATT&CK observados en este caso:\n- T1566.001 — Spearphishing Attachment\n- T1059.001 — PowerShell\n- T1003.001 — LSASS Memory Dump\n- T1021.002 — SMB/Windows Admin Shares (lateral movement)\n- T1486 — Data Encrypted for Impact\n\nReferencias recomendadas:\n- NIST SP 800-61r2: Computer Security Incident Handling Guide\n- CISA Ransomware Guide (2023)\n- MITRE ATT&CK Enterprise Matrix — Ransomware campaigns\n- CIS Controls v8, Control 11: Data Recovery"
+  },
+  "terminal_failure": {
+    "outcome": "failure",
+    "feedback_template": "La respuesta al incidente no fue completada adecuadamente. El ataque correspondía a ransomware human-operated distribuido vía phishing con macro malicioso y propagación lateral por credenciales comprometidas.\n\nPuntos críticos no abordados correctamente:\n{missed_points}\n\nErrores de proceso más frecuentes en este caso:\n- Iniciar recuperación antes de contener el ataque activo\n- Usar backups sin verificar su integridad previa\n- No identificar el patient zero y el vector de entrada antes de declarar la contención como completa\n- Omitir las obligaciones de reporte regulatorio en el plan de remediación\n\nTe recomendamos repasar el ciclo de vida de respuesta a incidentes del NIST SP 800-61 y practicar la fase de triaje con énfasis en la priorización de acciones bajo presión de tiempo."
+  },
+  "execution_rules": {
+    "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
+    "max_hints_per_node": 3,
+    "off_path_def": "The user's message is entirely unrelated to the case",
+    "default_off_path_response": "Esa consulta está fuera del contexto del incidente activo. Volvamos al caso — el CISO está esperando tu análisis.",
+    "off_path_max_attempts": 3
+  }
+}

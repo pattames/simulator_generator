@@ -1,0 +1,310 @@
+{
+  "simulator_id": "hvac_industrial_refrigeration_001",
+  "metadata": {
+    "domain": "Mantenimiento HVAC - Refrigeración Industrial",
+    "topic": "Diagnóstico de fallas en sistemas de refrigeración industrial",
+    "learning_objectives": [
+      "Aplicar diagnóstico sistemático en sistemas de refrigeración industrial mediante lectura de presiones y temperaturas",
+      "Diferenciar fallas por pérdida de refrigerante, contaminación con humedad y fallas mecánicas del compresor",
+      "Interpretar diagramas de presión-entalpía y lecturas de manifold para confirmar diagnóstico",
+      "Diseñar un plan de reparación y puesta en marcha que incluya verificación de hermeticidad y carga de refrigerante"
+    ]
+  },
+  "presentation": {
+    "intro": "Un técnico de guardia te llama reportando que la cámara frigorífica de una planta procesadora de alimentos no está manteniendo temperatura. La cámara debería estar a -18°C (producto congelado) pero lleva 4 horas marcando -8°C y bajando lentamente. El sistema usa un compresor semi-hermético Copeland de 20 HP con refrigerante R-404A. El operador comenta que hace dos semanas realizaron una intervención en el evaporador para corregir una fuga de agua del sistema de deshielo.",
+    "context": [
+      {
+        "label": "Sistema",
+        "value": "Refrigeración industrial, R-404A, compresor semi-hermético Copeland 20 HP"
+      },
+      {
+        "label": "Síntoma principal",
+        "value": "Cámara de congelados no mantiene -18°C, actualmente en -8°C"
+      },
+      {
+        "label": "Historial reciente",
+        "value": "Intervención en evaporador hace 2 semanas (reparación de fuga del sistema de deshielo)"
+      },
+      {
+        "label": "Condición ambiental",
+        "value": "Temperatura de sala de máquinas: 28°C"
+      }
+    ],
+    "initial_prompt": "Llegas a la sala de máquinas. ¿Cómo abordarías el diagnóstico de este sistema? ¿Qué verificarías primero?"
+  },
+  "decision_nodes": [
+    {
+      "id": "n1",
+      "stage": "Inspección visual y verificación operativa inicial",
+      "available_info": "Al ingresar a la sala de máquinas el compresor está en marcha, el condensador evaporativo opera normalmente. Se escucha el compresor sin golpeteos ni ruidos anormales. Las válvulas de servicio están abiertas. El visor de líquido sobre la línea de líquido muestra burbujeo continuo y el indicador de humedad está en color AMARILLO (advertencia de humedad) en lugar del verde esperado.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "inspección visual",
+            "revisar visualmente",
+            "observar equipo",
+            "ver visor de líquido",
+            "visor de líquido",
+            "burbujeo",
+            "indicador humedad"
+          ],
+          "feedback": "Muy bien. La inspección visual revela dos hallazgos críticos: burbujeo en el visor de líquido (indica refrigerante insuficiente o temperatura de subenfriamiento inadecuada) y el indicador de humedad en amarillo (posible contaminación con agua). Ambos hallazgos están relacionados con la intervención reciente en el evaporador. Continúa con la lectura de presiones.",
+          "next": "n2",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "manifold",
+            "manómetros",
+            "leer presiones",
+            "conectar manifold",
+            "presiones de operación"
+          ],
+          "feedback": "Conectar el manifold es un paso correcto y temprano en refrigeración. Lecturas obtenidas: presión de succión 0.8 bar (esperado ~2.4 bar para R-404A a -18°C), presión de descarga 18.5 bar (normal). La baja presión de succión es un hallazgo importante. ¿Qué más observas en el sistema antes de sacar conclusiones?",
+          "next": "n2",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "temperatura cámara",
+            "sensor temperatura",
+            "verificar sonda",
+            "termómetro cámara"
+          ],
+          "feedback": "Verificar la temperatura de la cámara confirma el síntoma pero no te acerca al origen de la falla. La cámara efectivamente está a -8°C. Para diagnosticar necesitas evaluar el sistema mecánico y frigorífico, no solo confirmar lo que ya sabes.",
+          "next": "n1",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "revisar compresor",
+            "inspeccionar compresor",
+            "amperaje compresor",
+            "consumo compresor"
+          ],
+          "feedback": "Medir el consumo del compresor es útil pero prematuro sin antes hacer una inspección visual del sistema completo. El amperaje del compresor está en 18A (la placa indica 22A nominal) — consumo bajo, consistente con baja carga de refrigerante. Aun así, conviene revisar el sistema de forma más integral primero.",
+          "next": "n2",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Antes de conectar instrumentos, ¿qué información puedes obtener recorriendo visualmente la sala de máquinas? Presta atención a todos los componentes del circuito frigorífico.",
+        "El visor de líquido no solo indica estado del flujo — tiene un segundo indicador. ¿Lo revisaste?",
+        "El historial menciona una intervención reciente. Los componentes intervenidos son siempre puntos de inspección prioritaria."
+      ]
+    },
+    {
+      "id": "n2",
+      "stage": "Lectura e interpretación de presiones y temperaturas",
+      "available_info": "Manifold conectado en válvulas de servicio del compresor. Lecturas: Presión de succión: 0.8 bar (temperatura de saturación equivalente: -40°C). Presión de descarga: 18.5 bar (temperatura de saturación: ~40°C, normal para condensación con 28°C ambiente). Temperatura real de línea de succión (termómetro de contacto): -15°C. Temperatura de línea de líquido: 32°C. Subenfriamiento calculado: ~8°C (aceptable). Superheat en succión: ~25°C (elevado, esperado 5-10°C). Indicador de humedad: AMARILLO.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "baja presión succión",
+            "presión succión baja",
+            "falta refrigerante",
+            "pérdida refrigerante",
+            "fuga refrigerante",
+            "refrigerante insuficiente"
+          ],
+          "feedback": "Correcto. La presión de succión de 0.8 bar equivale a una temperatura de saturación de -40°C, muy por debajo del set point de -18°C. Esto, combinado con el superheat elevado (25°C) y el burbujeo en el visor, confirma que hay refrigerante insuficiente en el sistema — probablemente por una fuga. Pero hay otro hallazgo igualmente importante que no debes ignorar. ¿Cuál es?",
+          "next": "n3",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "humedad",
+            "contaminación humedad",
+            "indicador amarillo",
+            "moisture",
+            "ácido"
+          ],
+          "feedback": "Buen ojo. El indicador amarillo señala presencia de humedad en el sistema — un hallazgo grave en refrigeración. La humedad puede provenir del sistema de deshielo intervenido recientemente. Sin embargo, también hay un problema de carga de refrigerante que debes considerar. Integra ambos hallazgos para un diagnóstico completo.",
+          "next": "n3",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "falla compresor",
+            "compresor dañado",
+            "válvulas compresor",
+            "eficiencia volumétrica"
+          ],
+          "feedback": "El compresor podría ser sospechoso, pero los datos no lo señalan como origen principal: no hay ruidos, la presión de descarga es normal (18.5 bar) y el diferencial de presión es adecuado. Un compresor con válvulas dañadas mostraría presión de descarga baja y succión alta — aquí es al revés. Revisa los datos con más atención.",
+          "next": "n2",
+          "penalty": "moderate"
+        },
+        {
+          "action_keywords": [
+            "válvula expansión",
+            "TEV",
+            "TXV",
+            "válvula termostática",
+            "restricción"
+          ],
+          "feedback": "Una válvula de expansión defectuosa podría causar superheat elevado, pero no explica el burbujeo en el visor ni la pérdida de presión tan marcada en succión. Además, una restricción en la válvula no explica el indicador de humedad. Busca un diagnóstico que integre todos los hallazgos.",
+          "next": "n2",
+          "penalty": "minor"
+        }
+      ],
+      "hints": [
+        "Tienes tres hallazgos clave: presión de succión muy baja, superheat elevado y visor con burbujeo. ¿Qué condición los explica a todos juntos?",
+        "Convierte la presión de succión a temperatura de saturación usando tablas de R-404A. ¿Qué te dice eso comparado con el set point de la cámara?",
+        "No ignores el indicador de humedad amarillo — es el segundo hallazgo independiente que debes integrar a tu diagnóstico diferencial."
+      ]
+    },
+    {
+      "id": "n3",
+      "stage": "Localización de la fuga y evaluación de contaminación",
+      "available_info": "Diagnóstico preliminar: sistema con refrigerante insuficiente (fuga) + posible contaminación con humedad. Herramientas disponibles: detector electrónico de fugas, detector de halógenos, agua jabonosa, kit de análisis de aceite por colorimetría.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "detector fugas",
+            "buscar fuga",
+            "detector electrónico",
+            "agua jabonosa",
+            "localizar fuga"
+          ],
+          "feedback": "Correcto. Se procede con detector electrónico de fugas. La alarma se activa en la zona de conexiones del evaporador — específicamente en una unión soldada en el retorno de gas, precisamente donde se realizó la intervención hace dos semanas. Se confirma fuga activa. Ahora necesitas evaluar el grado de contaminación por humedad.",
+          "next": "n4",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "análisis aceite",
+            "kit aceite",
+            "colorimetría aceite",
+            "acidez aceite"
+          ],
+          "feedback": "Buena iniciativa. El análisis colorimétrico del aceite muestra viraje a color anaranjado-rojo, indicando acidez — señal de que la humedad ya reaccionó con el refrigerante y el aceite generando ácido fluorhídrico/clorhídrico. Este es un hallazgo grave. Sin embargo, aún necesitas localizar físicamente la fuga antes de planificar la reparación.",
+          "next": "n4",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "vacío",
+            "hacer vacío",
+            "vacuómetro",
+            "prueba vacío"
+          ],
+          "feedback": "Hacer vacío es parte del proceso de reparación, no de diagnóstico. No puedes hacer vacío con el sistema en operación y con fuga activa sin antes localizar y reparar la fuga. Esto causaría pérdida del refrigerante restante y podría dañar el compresor.",
+          "next": "n3",
+          "penalty": "major"
+        },
+        {
+          "action_keywords": [
+            "cargar refrigerante",
+            "agregar gas",
+            "recargar",
+            "añadir R-404A"
+          ],
+          "feedback": "Agregar refrigerante sin localizar y reparar la fuga primero es incorrecto — perderías el refrigerante añadido y no resolverías el problema. Además, con humedad presente en el sistema, primero debes tratar la contaminación. Es un procedimiento que causaría daños adicionales.",
+          "next": "n3",
+          "penalty": "major"
+        }
+      ],
+      "hints": [
+        "Tienes un diagnóstico preliminar dual. ¿Cuál de los dos problemas debes confirmar y localizar físicamente primero para poder planificar la reparación?",
+        "El historial de intervención reciente en el evaporador es una pista muy valiosa. ¿Dónde empezarías a buscar la fuga?",
+        "Recuerda que agregar refrigerante sin reparar una fuga activa no es diagnóstico — es enmascarar el problema."
+      ]
+    },
+    {
+      "id": "n4",
+      "stage": "Evaluación del grado de contaminación y plan de remediación",
+      "available_info": "Fuga confirmada y localizada: unión soldada en retorno de gas del evaporador (zona de intervención previa). Análisis de aceite: acidez confirmada (viraje colorimétrico positivo). El sistema lleva operando con humedad por al menos 2 semanas según el historial. Tiempo estimado de exposición: suficiente para formación de ácidos en el circuito.",
+      "expected_actions": [
+        {
+          "action_keywords": [
+            "filtro secador",
+            "cambiar filtro",
+            "reemplazar filtro secador",
+            "drier",
+            "secador"
+          ],
+          "feedback": "Correcto y obligatorio. Con contaminación por humedad confirmada, el filtro secador (drier) debe reemplazarse — probablemente está saturado. En casos de contaminación severa, se recomienda un secador oversized en la línea de líquido y posiblemente uno adicional en la línea de succión. ¿Qué más incluiría tu plan de remediación?",
+          "next": "accumulator",
+          "penalty": null
+        },
+        {
+          "action_keywords": [
+            "flush sistema",
+            "limpiar circuito",
+            "purgar sistema",
+            "flush refrigerante"
+          ],
+          "feedback": "En casos de contaminación ácida severa, el flush del sistema es una medida válida y en algunos casos necesaria. Sin embargo, en sistemas de refrigeración industrial con compresor semi-hermético, el flush completo es complejo y costoso — la práctica estándar prioriza el cambio de aceite, filtros secadores y múltiples ciclos de vacío profundo. ¿Integras esto junto con las demás acciones necesarias?",
+          "next": "accumulator",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "solo reparar fuga",
+            "soldar",
+            "reparar unión",
+            "parchear fuga"
+          ],
+          "feedback": "Reparar la fuga es necesario pero absolutamente insuficiente en este caso. Tienes contaminación ácida confirmada en el aceite. Si solo soldas la fuga y recargas refrigerante sin tratar la contaminación, el ácido continuará dañando el compresor, la válvula de expansión y otros componentes internos. Debes incluir tratamiento de la contaminación.",
+          "next": "n4",
+          "penalty": "moderate"
+        }
+      ],
+      "hints": [
+        "Tienes dos problemas confirmados: fuga física y contaminación química. Tu plan debe abordar ambos de forma independiente.",
+        "La contaminación ácida en el aceite afecta principalmente al compresor. ¿Qué componente del circuito atrapa la humedad y los ácidos?",
+        "Piensa en los pasos estándar post-contaminación: componente de absorción, renovación del lubricante y protocolo de vacío."
+      ]
+    }
+  ],
+  "accumulator": {
+    "stage": "Plan de reparación y puesta en marcha",
+    "available_info": "Has identificado y confirmado: (1) fuga activa en unión soldada del evaporador y (2) contaminación del sistema con humedad y formación de ácidos en el aceite. Diseña un plan de reparación completo, ordenado y seguro que permita devolver el sistema a operación normal en -18°C con garantías de confiabilidad.",
+    "required_components": [
+      "reparación de fuga",
+      "cambio de aceite del compresor",
+      "reemplazo de filtro secador",
+      "vacío profundo y carga de refrigerante"
+    ],
+    "component_feedback": [
+      {
+        "component": "reparación de fuga",
+        "feedback": "Correcto. La reparación de la unión soldada en el evaporador es el primer paso físico. ¿Qué más incluirías para tratar la contaminación?"
+      },
+      {
+        "component": "cambio de aceite del compresor",
+        "feedback": "Bien. El aceite contaminado con ácidos debe ser reemplazado — de lo contrario continuará degradando los componentes internos del compresor. ¿Qué otros pasos son necesarios para asegurar la limpieza del circuito?"
+      },
+      {
+        "component": "reemplazo de filtro secador",
+        "feedback": "Excelente. El filtro secador nuevo absorberá la humedad residual. En sistemas con contaminación severa se recomienda usar un secador de mayor capacidad. ¿Queda algo antes de recargar el sistema?"
+      },
+      {
+        "component": "vacío profundo y carga de refrigerante",
+        "feedback": "Perfecto. El vacío profundo (mínimo 500 micrones, idealmente <300 micrones) elimina humedad residual y verifica hermeticidad antes de la carga. Una vez alcanzado y sostenido el vacío, se procede a la carga de R-404A por peso según especificación del sistema. Si tu plan incluye los cuatro componentes, el caso está resuelto."
+      }
+    ],
+    "on_complete": "terminal_success",
+    "hints": [
+      "El plan debe tener dos fases: reparación física (fuga) y remediación química (contaminación). No omitas ninguna.",
+      "Piensa en el orden lógico: primero reparar la fuga, luego eliminar la contaminación, luego evacuar y finalmente cargar.",
+      "El compresor ha estado en contacto con aceite ácido por 2 semanas. ¿Qué acción directa sobre el compresor es indispensable?"
+    ]
+  },
+  "terminal_success": {
+    "outcome": "success",
+    "diagnosis": "Fuga de refrigerante R-404A en unión soldada del evaporador con contaminación por humedad y acidez del aceite",
+    "feedback_template": "Excelente trabajo. Has diagnosticado correctamente un sistema con fuga activa de refrigerante combinada con contaminación por humedad, y propusiste un plan de reparación integral y ordenado.\n\nPuntos fuertes en tu razonamiento:\n{strengths}\n\nÁreas de mejora identificadas:\n{improvements}\n\nReferencias técnicas recomendadas:\n- ASHRAE Handbook — Refrigeration, capítulo sobre contaminación por humedad y ácidos\n- Copeland Application Engineering Bulletin AE-1234: Diagnóstico y reparación post-contaminación\n- RSES Technical Manual: Procedimientos de vacío profundo y verificación de hermeticidad\n- Tablas de presión-temperatura R-404A (Honeywell/Chemours)"
+  },
+  "terminal_failure": {
+    "outcome": "failure",
+    "feedback_template": "El diagnóstico no se completó adecuadamente. El caso correspondía a una fuga de refrigerante con contaminación por humedad en un sistema R-404A de refrigeración industrial.\n\nPuntos no identificados o mal abordados:\n{missed_points}\n\nTe recomendamos repasar:\n- Interpretación de lecturas de manifold en R-404A: relación entre presión de succión, temperatura de saturación y superheat\n- Significado del indicador de humedad en el visor de líquido\n- Protocolo estándar post-contaminación: cambio de aceite, filtros secadores y vacío profundo"
+  },
+  "execution_rules": {
+    "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
+    "max_hints_per_node": 3,
+    "off_path_def": "The user's message is entirely unrelated to the case",
+    "default_off_path_response": "Esa consulta no corresponde al caso que estamos diagnosticando. Mantengámonos enfocados en el sistema de refrigeración de la planta.",
+    "off_path_max_attempts": 3
+  }
+}
