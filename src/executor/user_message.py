@@ -1,13 +1,16 @@
 from string import Template
 from executor.state import ExecutorState, Penalty
 from schema.tree import SimulatorTree
+from pathlib import Path
 
 def main() -> None:
     # print(check_history_format())
     print(check_user_message())
 
 def check_user_message() -> str:
-    mock_history = [
+    raw_mock_tree = Path("examples/arch_generated/cybersecurity.json").read_text()
+    mock_tree = SimulatorTree.model_validate_json(raw_mock_tree)
+    mock_history_state = [
         {"role": "user", "content": "¿Cómo configuro un nodo raíz en el árbol?"},
         {"role": "assistant", "content": "El nodo raíz necesita un id único y una lista de transitions."},
         {"role": "user", "content": "What if a node has no children?"},
@@ -33,16 +36,14 @@ def check_user_message() -> str:
         # off_path_global_count = 1,
         # accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
         penalties = [mock_penalty_state_1, mock_penalty_state_2],
-        conversation_history = mock_history,
+        conversation_history = mock_history_state,
         # is_terminated = False
     )
 
-    return mock_state
+    return build_user_message(mock_state, mock_tree, "Estoy atorado, ¿cómo me sugerirías continuar?")
 
 def build_user_message(state: ExecutorState, tree: SimulatorTree, user_input: str) -> str:
     current_node = tree.resolve(state.current_node_ref)
-
-    return current_node
 
 def check_history_format() -> str:
     mock_history = [
