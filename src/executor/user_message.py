@@ -33,7 +33,7 @@ def check_user_message() -> str:
         current_node_ref = "n2",
         hints_used_this_node = 2,
         # off_path_global_count = 1,
-        # accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
+        accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
         penalties = [mock_penalty_state_1, mock_penalty_state_2],
         conversation_history = mock_history_state,
         # is_terminated = False
