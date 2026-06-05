@@ -4,7 +4,6 @@ from schema.tree import SimulatorTree
 from pathlib import Path
 
 def main() -> None:
-    # print(check_history_format())
     print(check_user_message())
 
 def check_user_message() -> str:
@@ -34,7 +33,7 @@ def check_user_message() -> str:
         current_node_ref = "n2",
         hints_used_this_node = 2,
         # off_path_global_count = 1,
-        # accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
+        accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
         penalties = [mock_penalty_state_1, mock_penalty_state_2],
         conversation_history = mock_history_state,
         # is_terminated = False
@@ -43,22 +42,16 @@ def check_user_message() -> str:
     return build_user_message(mock_state, mock_tree, "Estoy atorado, ¿cómo me sugerirías continuar?")
 
 def build_user_message(state: ExecutorState, tree: SimulatorTree, user_input: str) -> str:
+    user_message_template = Template(Path("executor/user_message_template.md").read_text())
     current_node = tree.resolve(state.current_node_ref)
+    covered_components_str = (
+        ", ".join(sorted(state.accumulator_components_covered))
+        if state.accumulator_components_covered
+        else "(none -- not in accumulator node yet, or no components covered)"
+    )
+    recent_history_str = format_conversation_history(state.conversation_history, last_n=6)
 
-def check_history_format() -> str:
-    mock_history = [
-        {"role": "user", "content": "¿Cómo configuro un nodo raíz en el árbol?"},
-        {"role": "assistant", "content": "El nodo raíz necesita un id único y una lista de transitions."},
-        {"role": "user", "content": "What if a node has no children?"},
-        {"role": "assistant", "content": "Then it's a terminal node — mark it with is_terminal=True."},
-        {"role": "user", "content": "Can transitions point backwards?"},
-        {"role": "assistant", "content": "Yes, the flat structure allows any node to reference any other by id."},
-        {"role": "user", "content": "How do I validate the whole tree?"},
-        {"role": "assistant", "content": "Run it through the SimulatorTree Pydantic model."},
-    ]
-    return format_conversation_history(mock_history, last_n=6)
 
-# Shorten and format conversation history for template use
 def format_conversation_history(history: list[dict], last_n: int = 6) -> str:
     if not history:
         return "(no prior turns)"
