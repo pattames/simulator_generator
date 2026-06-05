@@ -33,7 +33,7 @@ def check_user_message() -> str:
         current_node_ref = "n2",
         hints_used_this_node = 2,
         # off_path_global_count = 1,
-        accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
+        # accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
         penalties = [mock_penalty_state_1, mock_penalty_state_2],
         conversation_history = mock_history_state,
         # is_terminated = False
@@ -50,6 +50,15 @@ def build_user_message(state: ExecutorState, tree: SimulatorTree, user_input: st
         else "(none -- not in accumulator node yet, or no components covered)"
     )
     recent_history_str = format_conversation_history(state.conversation_history, last_n=6)
+
+    return user_message_template.substitute(
+        hint_path_def=tree.execution_rules.hint_path_def,
+        off_path_def=tree.execution_rules.off_path_def,
+        current_node=current_node.model_dump_json(indent=2),
+        covered_components=covered_components_str,
+        conversation_history=recent_history_str,
+        user_message=user_input,
+    )
 
 
 def format_conversation_history(history: list[dict], last_n: int = 6) -> str:
