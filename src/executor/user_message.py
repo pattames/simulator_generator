@@ -45,7 +45,7 @@ def build_user_message(state: ExecutorState, tree: SimulatorTree, user_input: st
     user_message_template = Template(Path("executor/user_message_template.md").read_text())
     current_node = tree.resolve(state.current_node_ref)
     covered_components_str = (
-        ", ".join(sorted(state.accumulator_components_covered))
+        f"- {'\n- '.join(sorted(state.accumulator_components_covered))}"
         if state.accumulator_components_covered
         else "(none -- not in accumulator node yet, or no components covered)"
     )
