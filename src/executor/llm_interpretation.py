@@ -7,6 +7,7 @@ from groq import Groq
 from dotenv import load_dotenv
 from executor.state import ExecutorState
 from schema.tree import SimulatorTree
+from executor.user_message import build_user_message, build_mock_user_message
 
 load_dotenv()
 
@@ -26,7 +27,10 @@ groq_client = Groq(
 )
 
 def interpret(state: ExecutorState, tree: SimulatorTree, user_input: str) -> Interpretation:
-    pass
+    # User message with arguments designed to come from runner
+    user_message = build_user_message(state, tree, user_input)
+    # User message with mock values for testing without runner
+    mock_user_message = build_mock_user_message()
 
 if __name__ == "__main__":
     print(groq_client)
