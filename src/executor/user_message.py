@@ -4,9 +4,10 @@ from schema.tree import SimulatorTree
 from pathlib import Path
 
 def main() -> None:
-    print(check_user_message())
+    print(build_mock_user_message())
 
-def check_user_message() -> str:
+# Build user message with pre-written mock values for checking
+def build_mock_user_message() -> str:
     raw_mock_tree = Path("examples/arch_generated/cybersecurity.json").read_text()
     mock_tree = SimulatorTree.model_validate_json(raw_mock_tree)
     mock_history_state = [
