@@ -1,8 +1,9 @@
+# Mock values for checking other modules
+
 from pathlib import Path
 from schema.tree import SimulatorTree
 from executor.state import ExecutorState, Penalty
 
-# Mock values for checking other modules
 
 MOCK_USER_INPUT = "Estoy atorado, ¿cómo me sugerirías continuar?"
 
