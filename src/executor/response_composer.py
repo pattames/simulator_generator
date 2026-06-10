@@ -7,12 +7,12 @@ from executor.mock_values import make_mock_state, make_mock_tree, MOCK_USER_INPU
 
 
 def main()-> None:
+    # Check functions with mock values:
     mock_state = make_mock_state()
     mock_tree = make_mock_tree()
     mock_interpretation = interpret(mock_state, mock_tree, MOCK_USER_INPUT)
     mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
 
-    # Check functions with mock values:
     # print(compose_terminal(mock_current_node))
 
 
