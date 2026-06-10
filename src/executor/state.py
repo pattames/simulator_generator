@@ -4,7 +4,7 @@ from typing import Literal
 class Penalty(BaseModel):
     node_id: str
     level: Literal["minor", "moderate", "major"]
-    note: str       # e.g., "Suggested premature lab work"
+    note: str       # e.g., for user input that caused the penalty
 
 class ExecutorState(BaseModel):
     current_node_ref: str
