@@ -42,7 +42,12 @@ def compose_off_path(tree: SimulatorTree) -> str:
 
 
 def compose_terminal(node: TerminalSNode | TerminalFNode) -> str:
-    return node.feedback_template
+    if isinstance(node, TerminalSNode):
+        return (
+            f"🎉 {node.feedback_template}\n\n"
+            f"🎯 **Diagnosis:** {node.diagnosis}"
+        )
+    return node.feedback_template  # TerminalFNode has no diagnosis field
 
 
 if __name__ == "__main__":

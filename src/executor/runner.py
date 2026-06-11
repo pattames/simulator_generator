@@ -21,7 +21,7 @@ def main()-> None:
 
 
 def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> ExecutorState:
-    # Pre-transition values the response_composer might need
+    # Pre-transition values
     node_before = tree.resolve(state.current_node_ref)
     assert not isinstance(node_before, (TerminalSNode, TerminalFNode)), "process_turn should not be called when current node is terminal"
     hints_used_before = state.hints_used_this_node
@@ -47,6 +47,24 @@ def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> 
                     note=f"User input: {user_input[:200]}",  # truncate for log compactness
                 ))
             response = compose_decision_match(node_before, llm_interpretation)
+
+        # If there is an accumulator component match
+        if isinstance(node_before, AccumulatorNode):
+            state.accumulator_components_covered.update(llm_interpretation.matched_components)
+            response = compose_accumulator_match(node_before, llm_interpretation)
+            # Completion if all components are covered
+            if set(node_before.required_components).issubset(state.accumulator_components_covered):
+                state.current_node_ref = node_before.on_complete
+                state.hints_used_this_node = 0
+                # Append terminal-success message after component feedback
+                terminal_node = tree.resolve(state.current_node_ref)
+                assert isinstance(terminal_node, TerminalSNode)
+                response += "\n\n" + compose_terminal(terminal_node)
+                state.is_terminated = True
+
+    # If a hint is needed
+    elif llm_interpretation.classification == "hint_needed":
+        state.hints_used_this_node += 1
 
     return state, response
 
