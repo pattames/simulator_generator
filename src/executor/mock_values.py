@@ -1,11 +1,10 @@
 # Mock values for checking other modules
-
 from pathlib import Path
 from schema.tree import SimulatorTree
 from executor.state import ExecutorState, Penalty
 
-
 MOCK_USER_INPUT = "Estoy un poco confundido."
+
 
 def main() -> None:
     print("MOCK TREE:\n", make_mock_tree())
@@ -14,11 +13,13 @@ def main() -> None:
     print("---------------------")
     print("MOCK USER INPUT:\n", MOCK_USER_INPUT)
 
+
 def make_mock_tree() -> SimulatorTree:
     raw_mock_tree = Path("examples/arch_generated/cybersecurity.json").read_text()
     mock_tree = SimulatorTree.model_validate_json(raw_mock_tree)
 
     return mock_tree
+
 
 def make_mock_state() -> ExecutorState:
     mock_history_state = [
@@ -52,6 +53,7 @@ def make_mock_state() -> ExecutorState:
     )
     
     return mock_state
+
 
 if __name__ == "__main__":
     main()
