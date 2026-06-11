@@ -65,6 +65,15 @@ def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> 
     # If a hint is needed
     elif llm_interpretation.classification == "hint_needed":
         state.hints_used_this_node += 1
+        # Terminal failure if number of hints rebases maximum
+        if state.hints_used_this_node > tree.execution_rules.max_hints_per_node:
+            state.current_node_ref = "terminal_failure"
+            terminal_node = tree.resolve(state.current_node_ref)
+            assert isinstance(terminal_node, TerminalFNode)
+            response = compose_terminal(terminal_node)
+            state.is_terminated = True
+        else:
+            response = compose_hint(node_before, hints_used_before)
 
     return state, response
 

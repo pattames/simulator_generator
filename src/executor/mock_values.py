@@ -5,7 +5,7 @@ from schema.tree import SimulatorTree
 from executor.state import ExecutorState, Penalty
 
 
-MOCK_USER_INPUT = "Probablemente sea necesarias algunas mejoras preventivas post-incidente, aplicar un plan de recuperación y realizar un reporte regulatorio."
+MOCK_USER_INPUT = "Estoy un poco confundido."
 
 def main() -> None:
     print("MOCK TREE:\n", make_mock_tree())
@@ -42,8 +42,8 @@ def make_mock_state() -> ExecutorState:
         note = "Suggested to start the recovery process without controlling the attack first."
     )
     mock_state = ExecutorState(
-        current_node_ref = "accumulator",
-        hints_used_this_node = 1,
+        current_node_ref = "n2",
+        hints_used_this_node = 0,
         # off_path_global_count = 1,
         accumulator_components_covered = {"erradicación y hardening"},
         # penalties = [mock_penalty_state_1, mock_penalty_state_2],
