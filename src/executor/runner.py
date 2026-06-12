@@ -15,8 +15,11 @@ def main()-> None:
     # Check functions with mock values:
     mock_state = make_mock_state()
     mock_tree = make_mock_tree()
+    mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
 
-    print(process_turn(MOCK_USER_INPUT, mock_state, mock_tree))
+    # print(process_turn(MOCK_USER_INPUT, mock_state, mock_tree))
+    print_presentation(mock_tree)
+    print_node_intro(mock_current_node)
 
 
 def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> ExecutorState:
@@ -92,6 +95,27 @@ def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> 
     state.conversation_history.append({"role": "assistant", "content": response})
 
     return state
+
+
+def print_presentation(tree: SimulatorTree) -> None:
+    p = tree.presentation
+    print(f"\n{'=' * 15} CASE PRESENTATION {'=' * 15}\n")
+    print(p.intro)
+    print()
+    for item in p.context:
+        print(f" - {item.label}: {item.value}")
+    print()
+    print(f"{p.initial_prompt}\n")
+
+
+def print_node_intro(node: DecisionNode | AccumulatorNode) -> None:
+    print(f"\n{'-' * 15} STAGE: {node.stage} {'-' * 15}\n")
+    print(f"AVAILABLE INFO: {node.available_info}")
+    print()
+
+
+def save_session(state: ExecutorState, tree: SimulatorTree) -> None:
+    pass
 
 
 if __name__ == "__main__":
