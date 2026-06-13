@@ -1,3 +1,7 @@
+import json
+from datetime import datetime
+from pathlib import Path
+
 from schema.tree import (
     SimulatorTree, DecisionNode, AccumulatorNode,
     TerminalSNode, TerminalFNode,
@@ -12,14 +16,16 @@ from executor.mock_values import make_mock_state, make_mock_tree, MOCK_USER_INPU
 
 
 def main()-> None:
-    # Check functions with mock values:
+    # Check with mock values:
     mock_state = make_mock_state()
     mock_tree = make_mock_tree()
     mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
 
     # print(process_turn(MOCK_USER_INPUT, mock_state, mock_tree))
-    print_presentation(mock_tree)
-    print_node_intro(mock_current_node)
+    # print_presentation(mock_tree)
+    # print_node_intro(mock_current_node)
+    # save_session(mock_state, mock_tree)
+    run_simulator(mock_tree)
 
 
 def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> ExecutorState:
@@ -115,7 +121,41 @@ def print_node_intro(node: DecisionNode | AccumulatorNode) -> None:
 
 
 def save_session(state: ExecutorState, tree: SimulatorTree) -> None:
-    pass
+    # Create dir
+    log_dir = Path("sessions")
+    log_dir.mkdir(exist_ok=True)
+    # Create file
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = log_dir / f"{tree.simulator_id}_{timestamp}.json"
+    path.write_text(
+        json.dumps({
+            "simulator_id": tree.simulator_id,
+            "history": state.conversation_history,
+            "penalties": [penalty.model_dump() for penalty in state.penalties],
+            "final_node": state.current_node_ref,
+            "accumulator_components_covered": list(state.accumulator_components_covered),
+            "off_path_count": state.off_path_global_count,
+        }, indent=2, ensure_ascii=False)
+    )
+    print(f"\n(session saved to {path})")
+
+
+# Simulator runner
+def run_simulator(tree: SimulatorTree) -> None:
+    state = ExecutorState(current_node_ref="n1")
+    print_presentation(tree)
+    previous_node_ref = None
+
+    while not state.is_terminated:
+        current_node = tree.resolve(state.current_node_ref)
+
+        # Only print node intro when entering a new node
+        if state.current_node_ref != previous_node_ref and isinstance(current_node, (DecisionNode, AccumulatorNode)):
+            print_node_intro(current_node)
+
+        user_input = input("> ").strip()
+
+        state.is_terminated = True
 
 
 if __name__ == "__main__":

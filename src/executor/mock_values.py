@@ -43,13 +43,13 @@ def make_mock_state() -> ExecutorState:
         note = "Suggested to start the recovery process without controlling the attack first."
     )
     mock_state = ExecutorState(
-        current_node_ref = "n2",
+        current_node_ref = "n3",
         hints_used_this_node = 0,
-        # off_path_global_count = 1,
+        off_path_global_count = 2,
         accumulator_components_covered = {"erradicación y hardening"},
-        # penalties = [mock_penalty_state_1, mock_penalty_state_2],
-        # conversation_history = mock_history_state,
-        # is_terminated = False
+        penalties = [mock_penalty_state_1, mock_penalty_state_2],
+        conversation_history = mock_history_state,
+        # is_terminated = True
     )
     
     return mock_state
