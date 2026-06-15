@@ -154,8 +154,18 @@ def run_simulator(tree: SimulatorTree) -> None:
             print_node_intro(current_node)
 
         user_input = input("> ").strip()
+        # Handle empty string by re-prompting the user
+        if not user_input:
+            continue
+        if user_input.lower() in {"/quit", "/exit"}:
+            print("Session terminated by user.")
+            break
 
-        state.is_terminated = True
+        state = process_turn(user_input, state, tree)
+        # The last item in conversation_history is the composed response
+        print(f"\n{state.conversation_history[-1]['content']}\n")
+
+    save_session(state, tree)
 
 
 if __name__ == "__main__":
