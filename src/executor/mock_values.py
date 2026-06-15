@@ -1,7 +1,7 @@
 # Mock values for checking other modules
 from pathlib import Path
 from schema.tree import SimulatorTree
-from executor.state import ExecutorState, Penalty
+from executor.models import ExecutorState, Penalty
 
 MOCK_USER_INPUT = "Estoy un poco confundido."
 

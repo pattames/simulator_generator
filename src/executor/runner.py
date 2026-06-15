@@ -6,20 +6,21 @@ from schema.tree import (
     SimulatorTree, DecisionNode, AccumulatorNode,
     TerminalSNode, TerminalFNode,
 )
-from executor.state import ExecutorState, Penalty
+from executor.models import ExecutorState, Penalty
 from executor.llm_interpretation import interpret
 from executor.response_composer import (
     compose_decision_match, compose_accumulator_match,
     compose_hint, compose_off_path, compose_terminal,
 )
-from executor.mock_values import make_mock_state, make_mock_tree, MOCK_USER_INPUT
+from executor.mock_values import make_mock_tree
+# from executor.mock_values import make_mock_state, MOCK_USER_INPUT
 
 
 def main()-> None:
     # Check with mock values:
-    mock_state = make_mock_state()
+    # mock_state = make_mock_state()
     mock_tree = make_mock_tree()
-    mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
+    # mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
 
     # print(process_turn(MOCK_USER_INPUT, mock_state, mock_tree))
     # print_presentation(mock_tree)
@@ -36,6 +37,8 @@ def process_turn(user_input: str, state: ExecutorState, tree: SimulatorTree) -> 
 
     # 1. Classify the user's input
     llm_interpretation = interpret(state, tree, user_input)
+    # Add interpretation to state
+    state.llm_interpretations.append(llm_interpretation)
 
     # 2. Apply new state transitions
     response: str
@@ -130,11 +133,13 @@ def save_session(state: ExecutorState, tree: SimulatorTree) -> None:
     path.write_text(
         json.dumps({
             "simulator_id": tree.simulator_id,
-            "history": state.conversation_history,
-            "penalties": [penalty.model_dump() for penalty in state.penalties],
             "final_node": state.current_node_ref,
-            "accumulator_components_covered": list(state.accumulator_components_covered),
+            "hint_count_on_final_node": state.hints_used_this_node,
+            "penalties": [penalty.model_dump() for penalty in state.penalties],
             "off_path_count": state.off_path_global_count,
+            "accumulator_components_covered": list(state.accumulator_components_covered),
+            "history": state.conversation_history,
+            "llm_interpretations": [interpretation.model_dump() for interpretation in state.llm_interpretations]
         }, indent=2, ensure_ascii=False)
     )
     print(f"\n(session saved to {path})")

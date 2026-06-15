@@ -1,5 +1,5 @@
 from string import Template
-from executor.state import ExecutorState
+from executor.models import ExecutorState
 from schema.tree import SimulatorTree
 from pathlib import Path
 from executor.mock_values import make_mock_tree, make_mock_state, MOCK_USER_INPUT 

@@ -1,11 +1,10 @@
 from pathlib import Path
-from typing import Literal
 
 from dotenv import load_dotenv
 from groq import Groq
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 
-from executor.state import ExecutorState
+from executor.models import ExecutorState, Interpretation
 from executor.user_message import build_user_message
 from executor.mock_values import MOCK_USER_INPUT, make_mock_tree, make_mock_state
 from schema.tree import SimulatorTree
@@ -17,17 +16,6 @@ INTERPRETATION_SYSTEM_PROMPT = Path("executor/system_prompt.md").read_text()
 MAX_ATTEMPTS = 3
 
 groq_client = Groq()
-
-
-# Pydantic target output structure
-class Interpretation(BaseModel):
-    classification: Literal["action_match", "hint_needed", "off_path"]
-    # For decision nodes:
-    matched_action_index: int | None = None
-    # For accumulator nodes:
-    matched_components: list[str] = Field(default_factory=list)
-    # Short reasoning trace, useful for debugging and logging
-    reasoning: str
 
 
 def main() -> None:

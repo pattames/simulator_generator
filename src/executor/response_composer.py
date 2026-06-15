@@ -2,7 +2,8 @@ from schema.tree import (
     SimulatorTree, DecisionNode, AccumulatorNode,
     TerminalSNode, TerminalFNode,
 )
-from executor.llm_interpretation import Interpretation, interpret
+from executor.llm_interpretation import interpret
+from executor.models import Interpretation
 from executor.mock_values import make_mock_state, make_mock_tree, MOCK_USER_INPUT
 
 
