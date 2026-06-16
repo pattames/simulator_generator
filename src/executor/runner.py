@@ -157,6 +157,7 @@ def run_simulator(tree: SimulatorTree) -> None:
         # Only print node intro when entering a new node
         if state.current_node_ref != previous_node_ref and isinstance(current_node, (DecisionNode, AccumulatorNode)):
             print_node_intro(current_node)
+            previous_node_ref = state.current_node_ref
 
         user_input = input("> ").strip()
         # Handle empty string by re-prompting the user
