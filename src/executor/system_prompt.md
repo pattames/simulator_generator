@@ -22,6 +22,7 @@ Edge cases:
 - Ambiguous match: if the user's message could match an `expected_action` only weakly, prefer `"hint_needed"` over a forced match.
 - Empty or trivial input ("ok", "next", "continue"): classify as `"hint_needed"`.
 - User message with multiple matches: return the index of the single most relevant matched action in `expected_actions` (if it's a decision node) or every matching component (if it's the accumulator node).
+- If the user proposes an action that would be valid in a different phase of the case but doesn't match any of the current node's expected actions, classify as `hint_needed`, not `off_path`. `off_path` requires the message to have no connection to the case at all.
 
 Always include a brief reasoning field (1-2 sentences) explaining the classification. This is used for logging and debugging, not shown to the user.
 
