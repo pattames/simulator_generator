@@ -38,7 +38,7 @@ def build_user_message(state: ExecutorState, tree: SimulatorTree, user_input: st
     return user_message_template.substitute(
         hint_path_def=tree.execution_rules.hint_path_def,
         off_path_def=tree.execution_rules.off_path_def,
-        current_node=current_node.model_dump_json(indent=2),
+        current_node=serialize_node_actions(current_node),
         covered_components=covered_components_str,
         conversation_history=recent_history_str,
         user_message=user_input,
