@@ -3,7 +3,7 @@ from pathlib import Path
 from schema.tree import SimulatorTree
 from executor.models import ExecutorState, Penalty
 
-MOCK_USER_INPUT = "Estoy un poco confundido."
+MOCK_USER_INPUT = "Es necesario realizar un plan de recuperación priorizado y también mejoras preventivas post-incidente."
 
 
 def main() -> None:
@@ -43,7 +43,7 @@ def make_mock_state() -> ExecutorState:
         note = "Suggested to start the recovery process without controlling the attack first."
     )
     mock_state = ExecutorState(
-        current_node_ref = "n3",
+        current_node_ref = "accumulator",
         hints_used_this_node = 0,
         off_path_global_count = 2,
         accumulator_components_covered = {"erradicación y hardening"},

@@ -15,6 +15,7 @@ def main()-> None:
     mock_current_node = mock_tree.resolve(mock_state.current_node_ref)
 
     # print(compose_terminal(mock_current_node))
+    print(compose_accumulator_match(mock_current_node, mock_interpretation))
 
 
 def compose_decision_match(node: DecisionNode, interpretation: Interpretation) -> str:
@@ -28,7 +29,7 @@ def compose_accumulator_match(node: AccumulatorNode, interpretation: Interpretat
     for matched_component in interpretation.matched_components:
         for component_feedback in node.component_feedback:
             if component_feedback.component == matched_component:
-                parts.append(component_feedback.feedback)
+                parts.append(f"- ✅ {component_feedback.component.capitalize()} → {component_feedback.feedback}")
                 break
     return "\n\n".join(parts)
 
