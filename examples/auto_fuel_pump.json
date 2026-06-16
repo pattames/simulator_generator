@@ -15,28 +15,27 @@
       {"label": "Vehículo", "value": "Honda Civic 2015, 1.8L gasolina, 120,000 km"},
       {"label": "Síntoma principal", "value": "Motor cranquea pero no enciende"},
       {"label": "Historial reciente", "value": "Cargó combustible en estación no habitual el día anterior"}
-    ],
-    "initial_prompt": "¿Cómo abordarías este diagnóstico? ¿Qué revisarías primero?"
+    ]
   },
   "decision_nodes": [
     {
       "id": "n1",
       "stage": "Inspección inicial y verificación de síntomas",
-      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.",
+      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.\n\n¿Por dónde empezarías el diagnóstico?",
       "expected_actions": [
         {
           "action_keywords": ["inspección visual", "revisar fugas", "buscar fugas", "checar visual"],
-          "feedback": "Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
+          "feedback": "✅ Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
           "next": "n2"
         },
         {
           "action_keywords": ["escuchar bomba", "switch on", "verificar zumbido bomba", "activar switch"],
-          "feedback": "Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
+          "feedback": "✅ Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
           "next": "n2"
         },
         {
           "action_keywords": ["scanner", "obd", "código de falla", "lector"],
-          "feedback": "Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
+          "feedback": "✅ Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
           "next": "n2",
           "penalty": "minor"
         }
@@ -49,22 +48,22 @@
     {
       "id": "n2",
       "stage": "Diagnóstico diferencial",
-      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.",
+      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.\n\n¿De qué sistema sospecharías?",
       "expected_actions": [
         {
           "action_keywords": ["sistema combustible", "bomba combustible", "fuel pump", "presión combustible"],
-          "feedback": "Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
+          "feedback": "✅ Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
           "next": "n3"
         },
         {
           "action_keywords": ["batería", "alternador", "sistema eléctrico", "cables"],
-          "feedback": "Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
+          "feedback": "❌ Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
           "next": "n2",
           "penalty": "minor"
         },
         {
           "action_keywords": ["motor de arranque", "starter", "marcha", "solenoide"],
-          "feedback": "El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
+          "feedback": "❌ El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
           "next": "n2",
           "penalty": "moderate"
         }
@@ -77,16 +76,16 @@
     {
       "id": "n3",
       "stage": "Confirmación diagnóstica",
-      "available_info": "Pruebas disponibles del sistema de combustible.",
+      "available_info": "Pruebas disponibles del sistema de combustible.\n\n¿Qué prueba realizarías para confirmar tu sospecha?",
       "expected_actions": [
         {
           "action_keywords": ["prueba presión combustible", "manómetro combustible", "test presión", "fuel pressure test"],
-          "feedback": "Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
+          "feedback": "✅ Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
           "next": "accumulator"
         },
         {
           "action_keywords": ["inspección visual tanque", "ver tanque", "inspeccionar combustible"],
-          "feedback": "Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
+          "feedback": "❌ Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
           "next": "n3",
           "penalty": "minor"
         }
@@ -101,9 +100,9 @@
     "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
     "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
     "component_feedback": [
-      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más debes hacer para evitar que la bomba nueva sufra el mismo daño?"},
-      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Algo más?"},
-      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. Si tu plan incluye los tres componentes, puedes cerrar el caso."}
+      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial."},
+      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas."},
+      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva."}
     ],
     "on_complete": "terminal_success",
     "hints": [

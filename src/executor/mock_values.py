@@ -1,11 +1,10 @@
 # Mock values for checking other modules
-
 from pathlib import Path
 from schema.tree import SimulatorTree
-from executor.state import ExecutorState, Penalty
+from executor.models import ExecutorState, Penalty
 
+MOCK_USER_INPUT = "Es necesario realizar un plan de recuperación priorizado y también mejoras preventivas post-incidente."
 
-MOCK_USER_INPUT = "Creo que convendría analizar la memoria RAM."
 
 def main() -> None:
     print("MOCK TREE:\n", make_mock_tree())
@@ -14,11 +13,13 @@ def main() -> None:
     print("---------------------")
     print("MOCK USER INPUT:\n", MOCK_USER_INPUT)
 
+
 def make_mock_tree() -> SimulatorTree:
     raw_mock_tree = Path("examples/arch_generated/cybersecurity.json").read_text()
     mock_tree = SimulatorTree.model_validate_json(raw_mock_tree)
 
     return mock_tree
+
 
 def make_mock_state() -> ExecutorState:
     mock_history_state = [
@@ -42,16 +43,17 @@ def make_mock_state() -> ExecutorState:
         note = "Suggested to start the recovery process without controlling the attack first."
     )
     mock_state = ExecutorState(
-        current_node_ref = "n3",
-        hints_used_this_node = 1,
-        # off_path_global_count = 1,
-        # accumulator_components_covered = {"erradicación y hardening", "plan de recuperación priorizado"},
-        # penalties = [mock_penalty_state_1, mock_penalty_state_2],
-        # conversation_history = mock_history_state,
-        # is_terminated = False
+        current_node_ref = "accumulator",
+        hints_used_this_node = 0,
+        off_path_global_count = 2,
+        accumulator_components_covered = {"erradicación y hardening"},
+        penalties = [mock_penalty_state_1, mock_penalty_state_2],
+        conversation_history = mock_history_state,
+        # is_terminated = True
     )
     
     return mock_state
+
 
 if __name__ == "__main__":
     main()
