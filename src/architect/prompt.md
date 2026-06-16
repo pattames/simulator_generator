@@ -53,4 +53,4 @@ The following strings describe when a hint should be offered to the user and whe
 - Cases should reflect realistic, domain-appropriate situations.
 - Stage labels and available_info should use vocabulary native to the domain (e.g., "Anamnesis" for veterinary, "Inspección inicial" for automotive, "Calificación de los hechos" for legal).
 - Available_info in decision nodes typically reveals new data the user has uncovered by taking the right action in the previous node. In the accumulator, available_info is more of a problem statement than fresh data.
-- Available_info in decision nodes must end with a directing question on a new paragraph that invites the user toward the node's expected action without revealing the answer
+- Each decision node's available_info must end with an open-ended question that invites the user to take an action appropriate to the node's stage. Examples: '¿Qué harías primero?', '¿Cuál sería tu siguiente paso?', '¿Qué prueba solicitarías?', '¿Cómo procederías?'. The question should be specific to the stage (anamnesis vs. confirmation vs. treatment, etc.) and should not give away the expected action.

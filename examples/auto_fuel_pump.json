@@ -22,7 +22,7 @@
     {
       "id": "n1",
       "stage": "Inspección inicial y verificación de síntomas",
-      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.",
+      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.\n\n¿Por dónde empezarías el diagnóstico?",
       "expected_actions": [
         {
           "action_keywords": ["inspección visual", "revisar fugas", "buscar fugas", "checar visual"],
@@ -49,7 +49,7 @@
     {
       "id": "n2",
       "stage": "Diagnóstico diferencial",
-      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.",
+      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.\n\n¿De qué sistema sospecharías?",
       "expected_actions": [
         {
           "action_keywords": ["sistema combustible", "bomba combustible", "fuel pump", "presión combustible"],
@@ -77,7 +77,7 @@
     {
       "id": "n3",
       "stage": "Confirmación diagnóstica",
-      "available_info": "Pruebas disponibles del sistema de combustible.",
+      "available_info": "Pruebas disponibles del sistema de combustible.\n\n¿Qué prueba realizarías para confirmar tu sospecha?",
       "expected_actions": [
         {
           "action_keywords": ["prueba presión combustible", "manómetro combustible", "test presión", "fuel pressure test"],

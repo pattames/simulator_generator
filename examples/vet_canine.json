@@ -21,7 +21,7 @@
     {
       "id": "n1",
       "stage": "Anamnesis y examen inicial",
-      "available_info": "Paciente alerta pero deprimido, mucosas ligeramente pálidas, TLC 2 segundos, temperatura 37.6°C (ligeramente baja), FC 60 lpm (bradicardia relativa).",
+      "available_info": "Paciente alerta pero deprimido, mucosas ligeramente pálidas, TLC 2 segundos, temperatura 37.6°C (ligeramente baja), FC 60 lpm (bradicardia relativa).\n\n¿Cuál sería tu siguiente paso?",
       "expected_actions": [
         {
           "action_keywords": ["historia clínica", "anamnesis", "preguntar al propietario", "antecedentes"],
@@ -48,7 +48,7 @@
     {
       "id": "n2",
       "stage": "Diagnóstico diferencial y pruebas",
-      "available_info": "Hemograma: leve anemia no regenerativa. Química sanguínea: Na+ 128 mEq/L (bajo), K+ 6.8 mEq/L (alto), relación Na/K = 18.8 (baja), glucosa 58 mg/dL (baja), BUN elevado.",
+      "available_info": "Hemograma: leve anemia no regenerativa. Química sanguínea: Na+ 128 mEq/L (bajo), K+ 6.8 mEq/L (alto), relación Na/K = 18.8 (baja), glucosa 58 mg/dL (baja), BUN elevado.\n\n¿Cuál es tu diagnóstico diferencial principal?",
       "expected_actions": [
         {
           "action_keywords": ["hipoadrenocorticismo", "addison", "enfermedad de addison", "insuficiencia adrenal"],
@@ -76,7 +76,7 @@
     {
       "id": "n3",
       "stage": "Confirmación diagnóstica",
-      "available_info": "Resultados disponibles: cortisol basal bajo, prueba de estimulación con ACTH muestra respuesta plana (cortisol pre y post-ACTH < 2 μg/dL).",
+      "available_info": "Resultados disponibles: cortisol basal bajo, prueba de estimulación con ACTH muestra respuesta plana (cortisol pre y post-ACTH < 2 μg/dL).\n\n¿Qué prueba confirmatoria solicitarías?",
       "expected_actions": [
         {
           "action_keywords": ["estimulación acth", "prueba de acth", "test de acth", "acth stim"],
