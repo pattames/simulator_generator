@@ -49,7 +49,6 @@ class ContextItem(BaseModel):
 class Presentation(BaseModel):
     intro: str
     context: list[ContextItem]
-    initial_prompt: str
 
 class Metadata(BaseModel):
     domain: str

@@ -14,8 +14,7 @@
     "context": [
       {"label": "Paciente", "value": "Golden Retriever macho castrado, 7 años, 32 kg"},
       {"label": "Motivo de consulta", "value": "Letargo, anorexia y vómitos intermitentes"}
-    ],
-    "initial_prompt": "¿Cómo abordarías este caso? ¿Qué información o pruebas solicitarías primero?"
+    ]
   },
   "decision_nodes": [
     {

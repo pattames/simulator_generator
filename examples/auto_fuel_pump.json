@@ -15,8 +15,7 @@
       {"label": "Vehículo", "value": "Honda Civic 2015, 1.8L gasolina, 120,000 km"},
       {"label": "Síntoma principal", "value": "Motor cranquea pero no enciende"},
       {"label": "Historial reciente", "value": "Cargó combustible en estación no habitual el día anterior"}
-    ],
-    "initial_prompt": "¿Cómo abordarías este diagnóstico? ¿Qué revisarías primero?"
+    ]
   },
   "decision_nodes": [
     {

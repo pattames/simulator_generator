@@ -114,7 +114,6 @@ def print_presentation(tree: SimulatorTree) -> None:
     for item in p.context:
         print(f" - {item.label}: {item.value}")
     print()
-    print(f"{p.initial_prompt}\n")
 
 
 def print_node_intro(node: DecisionNode | AccumulatorNode) -> None:
