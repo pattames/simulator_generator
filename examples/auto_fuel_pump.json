@@ -25,17 +25,17 @@
       "expected_actions": [
         {
           "action_keywords": ["inspección visual", "revisar fugas", "buscar fugas", "checar visual"],
-          "feedback": "Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
+          "feedback": "✅ Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
           "next": "n2"
         },
         {
           "action_keywords": ["escuchar bomba", "switch on", "verificar zumbido bomba", "activar switch"],
-          "feedback": "Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
+          "feedback": "✅ Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
           "next": "n2"
         },
         {
           "action_keywords": ["scanner", "obd", "código de falla", "lector"],
-          "feedback": "Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
+          "feedback": "✅ Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
           "next": "n2",
           "penalty": "minor"
         }
@@ -52,18 +52,18 @@
       "expected_actions": [
         {
           "action_keywords": ["sistema combustible", "bomba combustible", "fuel pump", "presión combustible"],
-          "feedback": "Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
+          "feedback": "✅ Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
           "next": "n3"
         },
         {
           "action_keywords": ["batería", "alternador", "sistema eléctrico", "cables"],
-          "feedback": "Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
+          "feedback": "❌ Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
           "next": "n2",
           "penalty": "minor"
         },
         {
           "action_keywords": ["motor de arranque", "starter", "marcha", "solenoide"],
-          "feedback": "El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
+          "feedback": "❌ El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
           "next": "n2",
           "penalty": "moderate"
         }
@@ -80,12 +80,12 @@
       "expected_actions": [
         {
           "action_keywords": ["prueba presión combustible", "manómetro combustible", "test presión", "fuel pressure test"],
-          "feedback": "Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
+          "feedback": "✅ Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
           "next": "accumulator"
         },
         {
           "action_keywords": ["inspección visual tanque", "ver tanque", "inspeccionar combustible"],
-          "feedback": "Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
+          "feedback": "❌ Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
           "next": "n3",
           "penalty": "minor"
         }

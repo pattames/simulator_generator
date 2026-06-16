@@ -1,8 +1,3 @@
-{
-  "simulator_id": "vet_canine_lethargy_001",
-  "metadata": {
-    "domain": "Medicina veterinaria - canino",
-    "topic": "Diagnóstico diferencial de letargo y anorexia",
     "learning_objectives": [
       "Aplicar razonamiento clínico secuencial",
       "Priorizar pruebas diagnósticas según hallazgos",
@@ -24,17 +19,17 @@
       "expected_actions": [
         {
           "action_keywords": ["historia clínica", "anamnesis", "preguntar al propietario", "antecedentes"],
-          "feedback": "Excelente. Una anamnesis detallada es el primer paso correcto. El propietario reporta que el perro ha bebido mucha agua en las últimas semanas y ha tenido episodios previos de 'decaimiento' que resolvían solos.",
+          "feedback": "✅ Excelente. Una anamnesis detallada es el primer paso correcto. El propietario reporta que el perro ha bebido mucha agua en las últimas semanas y ha tenido episodios previos de 'decaimiento' que resolvían solos.",
           "next": "n2"
         },
         {
           "action_keywords": ["examen físico", "exploración física", "signos vitales"],
-          "feedback": "Buen paso. Ya tienes signos vitales iniciales. Nota la bradicardia relativa y la hipotermia leve — son hallazgos importantes. ¿Qué harías a continuación?",
+          "feedback": "✅ Buen paso. Ya tienes signos vitales iniciales. Nota la bradicardia relativa y la hipotermia leve — son hallazgos importantes. ¿Qué harías a continuación?",
           "next": "n2"
         },
         {
           "action_keywords": ["análisis de sangre", "hemograma", "química sanguínea", "laboratorio"],
-          "feedback": "Es una prueba razonable, pero saltas pasos clínicos importantes. Antes de pedir laboratorio, conviene completar anamnesis y examen físico. Aun así, los resultados son reveladores — continuemos.",
+          "feedback": "✅ Es una prueba razonable, pero saltas pasos clínicos importantes. Antes de pedir laboratorio, conviene completar anamnesis y examen físico. Aun así, los resultados son reveladores — continuemos.",
           "next": "n2",
           "penalty": "minor"
         }
@@ -51,18 +46,18 @@
       "expected_actions": [
         {
           "action_keywords": ["hipoadrenocorticismo", "addison", "enfermedad de addison", "insuficiencia adrenal"],
-          "feedback": "Muy bien. La relación Na/K menor a 27, junto con hipoglucemia y los signos clínicos, es altamente sugestiva de hipoadrenocorticismo (enfermedad de Addison). ¿Qué prueba confirmatoria solicitarías?",
+          "feedback": "✅ Muy bien. La relación Na/K menor a 27, junto con hipoglucemia y los signos clínicos, es altamente sugestiva de hipoadrenocorticismo (enfermedad de Addison). ¿Qué prueba confirmatoria solicitarías?",
           "next": "n3"
         },
         {
           "action_keywords": ["insuficiencia renal", "enfermedad renal", "falla renal"],
-          "feedback": "Es un diferencial razonable por el BUN elevado, pero no explica la relación Na/K baja ni la hipoglucemia. Revisa nuevamente los electrolitos — hay un patrón característico que apunta a otra dirección.",
+          "feedback": "❌ Es un diferencial razonable por el BUN elevado, pero no explica la relación Na/K baja ni la hipoglucemia. Revisa nuevamente los electrolitos — hay un patrón característico que apunta a otra dirección.",
           "next": "n2",
           "penalty": "minor"
         },
         {
           "action_keywords": ["gastroenteritis", "parvovirus", "infección"],
-          "feedback": "Podría explicar vómitos y letargo, pero no la bradicardia, la hiponatremia con hiperkalemia, ni la hipoglucemia. Mira el patrón electrolítico — es una pista clave.",
+          "feedback": "❌ Podría explicar vómitos y letargo, pero no la bradicardia, la hiponatremia con hiperkalemia, ni la hipoglucemia. Mira el patrón electrolítico — es una pista clave.",
           "next": "n2",
           "penalty": "moderate"
         }
@@ -79,12 +74,12 @@
       "expected_actions": [
         {
           "action_keywords": ["estimulación acth", "prueba de acth", "test de acth", "acth stim"],
-          "feedback": "Correcto. La prueba de estimulación con ACTH es el gold standard. La respuesta plana confirma hipoadrenocorticismo primario. Ahora, ¿cuál sería tu plan terapéutico?",
+          "feedback": "✅ Correcto. La prueba de estimulación con ACTH es el gold standard. La respuesta plana confirma hipoadrenocorticismo primario. Ahora, ¿cuál sería tu plan terapéutico?",
           "next": "accumulator"
         },
         {
           "action_keywords": ["cortisol basal", "cortisol en ayuno"],
-          "feedback": "Un cortisol basal bajo es sugestivo pero no confirmatorio — puede verse en enfermedad no adrenal. Necesitas una prueba dinámica. ¿Cuál?",
+          "feedback": "❌ Un cortisol basal bajo es sugestivo pero no confirmatorio — puede verse en enfermedad no adrenal. Necesitas una prueba dinámica. ¿Cuál?",
           "next": "n3",
           "penalty": "minor"
         }
