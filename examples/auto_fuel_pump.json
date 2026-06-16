@@ -100,9 +100,9 @@
     "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
     "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
     "component_feedback": [
-      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más debes hacer para evitar que la bomba nueva sufra el mismo daño?"},
-      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Algo más?"},
-      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. Si tu plan incluye los tres componentes, puedes cerrar el caso."}
+      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial."},
+      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas."},
+      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva."}
     ],
     "on_complete": "terminal_success",
     "hints": [
