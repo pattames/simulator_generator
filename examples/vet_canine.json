@@ -12,8 +12,14 @@
   "presentation": {
     "intro": "Se presenta a consulta un Golden Retriever macho castrado de 7 años por letargo progresivo y anorexia de 3 días de evolución. El propietario reporta además episodios intermitentes de vómito durante la última semana.",
     "context": [
-      {"label": "Paciente", "value": "Golden Retriever macho castrado, 7 años, 32 kg"},
-      {"label": "Motivo de consulta", "value": "Letargo, anorexia y vómitos intermitentes"}
+      {
+        "label": "Paciente",
+        "value": "Golden Retriever macho castrado, 7 años, 32 kg"
+      },
+      {
+        "label": "Motivo de consulta",
+        "value": "Letargo, anorexia y vómitos intermitentes"
+      }
     ]
   },
   "decision_nodes": [
@@ -23,17 +29,31 @@
       "available_info": "Paciente alerta pero deprimido, mucosas ligeramente pálidas, TLC 2 segundos, temperatura 37.6°C (ligeramente baja), FC 60 lpm (bradicardia relativa).\n\n¿Cuál sería tu siguiente paso?",
       "expected_actions": [
         {
-          "action_keywords": ["historia clínica", "anamnesis", "preguntar al propietario", "antecedentes"],
+          "action_keywords": [
+            "historia clínica",
+            "anamnesis",
+            "preguntar al propietario",
+            "antecedentes"
+          ],
           "feedback": "✅ Excelente. Una anamnesis detallada es el primer paso correcto. El propietario reporta que el perro ha bebido mucha agua en las últimas semanas y ha tenido episodios previos de 'decaimiento' que resolvían solos.",
           "next": "n2"
         },
         {
-          "action_keywords": ["examen físico", "exploración física", "signos vitales"],
+          "action_keywords": [
+            "examen físico",
+            "exploración física",
+            "signos vitales"
+          ],
           "feedback": "✅ Buen paso. Ya tienes signos vitales iniciales. Nota la bradicardia relativa y la hipotermia leve — son hallazgos importantes. ¿Qué harías a continuación?",
           "next": "n2"
         },
         {
-          "action_keywords": ["análisis de sangre", "hemograma", "química sanguínea", "laboratorio"],
+          "action_keywords": [
+            "análisis de sangre",
+            "hemograma",
+            "química sanguínea",
+            "laboratorio"
+          ],
           "feedback": "✅ Es una prueba razonable, pero saltas pasos clínicos importantes. Antes de pedir laboratorio, conviene completar anamnesis y examen físico. Aun así, los resultados son reveladores — continuemos.",
           "next": "n2",
           "penalty": "minor"
@@ -50,18 +70,31 @@
       "available_info": "Hemograma: leve anemia no regenerativa. Química sanguínea: Na+ 128 mEq/L (bajo), K+ 6.8 mEq/L (alto), relación Na/K = 18.8 (baja), glucosa 58 mg/dL (baja), BUN elevado.\n\n¿Cuál es tu diagnóstico diferencial principal?",
       "expected_actions": [
         {
-          "action_keywords": ["hipoadrenocorticismo", "addison", "enfermedad de addison", "insuficiencia adrenal"],
+          "action_keywords": [
+            "hipoadrenocorticismo",
+            "addison",
+            "enfermedad de addison",
+            "insuficiencia adrenal"
+          ],
           "feedback": "✅ Muy bien. La relación Na/K menor a 27, junto con hipoglucemia y los signos clínicos, es altamente sugestiva de hipoadrenocorticismo (enfermedad de Addison). ¿Qué prueba confirmatoria solicitarías?",
           "next": "n3"
         },
         {
-          "action_keywords": ["insuficiencia renal", "enfermedad renal", "falla renal"],
+          "action_keywords": [
+            "insuficiencia renal",
+            "enfermedad renal",
+            "falla renal"
+          ],
           "feedback": "❌ Es un diferencial razonable por el BUN elevado, pero no explica la relación Na/K baja ni la hipoglucemia. Revisa nuevamente los electrolitos — hay un patrón característico que apunta a otra dirección.",
           "next": "n2",
           "penalty": "minor"
         },
         {
-          "action_keywords": ["gastroenteritis", "parvovirus", "infección"],
+          "action_keywords": [
+            "gastroenteritis",
+            "parvovirus",
+            "infección"
+          ],
           "feedback": "❌ Podría explicar vómitos y letargo, pero no la bradicardia, la hiponatremia con hiperkalemia, ni la hipoglucemia. Mira el patrón electrolítico — es una pista clave.",
           "next": "n2",
           "penalty": "moderate"
@@ -78,12 +111,20 @@
       "available_info": "Resultados disponibles: cortisol basal bajo, prueba de estimulación con ACTH muestra respuesta plana (cortisol pre y post-ACTH < 2 μg/dL).\n\n¿Qué prueba confirmatoria solicitarías?",
       "expected_actions": [
         {
-          "action_keywords": ["estimulación acth", "prueba de acth", "test de acth", "acth stim"],
+          "action_keywords": [
+            "estimulación acth",
+            "prueba de acth",
+            "test de acth",
+            "acth stim"
+          ],
           "feedback": "✅ Correcto. La prueba de estimulación con ACTH es el gold standard. La respuesta plana confirma hipoadrenocorticismo primario. Ahora, ¿cuál sería tu plan terapéutico?",
           "next": "accumulator"
         },
         {
-          "action_keywords": ["cortisol basal", "cortisol en ayuno"],
+          "action_keywords": [
+            "cortisol basal",
+            "cortisol en ayuno"
+          ],
           "feedback": "❌ Un cortisol basal bajo es sugestivo pero no confirmatorio — puede verse en enfermedad no adrenal. Necesitas una prueba dinámica. ¿Cuál?",
           "next": "n3",
           "penalty": "minor"
@@ -94,17 +135,30 @@
       ]
     }
   ],
-  "accumulator": {						
+  "accumulator": {
     "stage": "Plan terapéutico",
-  	  "available_info": "Has confirmado el diagnóstico de hipoadrenocorticismo primario. El paciente se encuentra estable pero requiere manejo agudo de la crisis addisoniana e inicio de terapia de reemplazo hormonal a largo plazo. Diseña un plan terapéutico completo que aborde tanto la estabilización inmediata como el manejo crónico.",
-  	  "required_components": ["fluidoterapia", "glucocorticoide", "mineralocorticoide"],
-  	  "component_feedback": [
-  	    {"component": "fluidoterapia", "feedback": "Estás en el camino correcto. ¿Qué más?"},
-  	    {"component": "glucocorticoide", "feedback": "Bien. La suplementación con glucocorticoides es esencial. ¿Qué más?"},
-  	    {"component": "mineralocorticoide", "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo. ¿Qué más?"}
-  	  ],
-  	  "on_complete": "terminal_success",
-  	  "hints": [
+    "available_info": "Has confirmado el diagnóstico de hipoadrenocorticismo primario. El paciente se encuentra estable pero requiere manejo agudo de la crisis addisoniana e inicio de terapia de reemplazo hormonal a largo plazo. Diseña un plan terapéutico completo que aborde tanto la estabilización inmediata como el manejo crónico.",
+    "required_components": [
+      "fluidoterapia",
+      "glucocorticoide",
+      "mineralocorticoide"
+    ],
+    "component_feedback": [
+      {
+        "component": "fluidoterapia",
+        "feedback": "Estás en el camino correcto. ¿Qué más?"
+      },
+      {
+        "component": "glucocorticoide",
+        "feedback": "Bien. La suplementación con glucocorticoides es esencial. ¿Qué más?"
+      },
+      {
+        "component": "mineralocorticoide",
+        "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo. ¿Qué más?"
+      }
+    ],
+    "on_complete": "terminal_success",
+    "hints": [
       "El tratamiento tiene dos componentes: manejo agudo de la crisis addisoniana y terapia de reemplazo hormonal crónica.",
       "Piensa en los tres ejes: volumen, glucocorticoides y mineralocorticoides."
     ]
@@ -119,7 +173,7 @@
     "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario.\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
   },
   "execution_rules": {
-	"hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
+    "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
     "off_path_def": "The user's message is entirely unrelated to the case",
     "default_off_path_response": "Esa pregunta no corresponde a este momento del caso.",
