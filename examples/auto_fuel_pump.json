@@ -100,9 +100,9 @@
     "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
     "required_components": ["reemplazo bomba combustible", "limpieza sistema combustible", "reemplazo filtro combustible"],
     "component_feedback": [
-      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial."},
-      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas."},
-      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva."}
+      {"component": "reemplazo bomba combustible", "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más?"},
+      {"component": "limpieza sistema combustible", "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Qué más?"},
+      {"component": "reemplazo filtro combustible", "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. ¿Qué más?"}
     ],
     "on_complete": "terminal_success",
     "hints": [
@@ -113,11 +113,11 @@
   "terminal_success": {
     "outcome": "success",
     "diagnosis": "Falla de bomba de combustible por contaminación de gasolina",
-    "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nPuntos fuertes observados:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
+    "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
   },
   "terminal_failure": {
     "outcome": "failure",
-    "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación. Revisa los siguientes puntos:\n{missed_points}\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
+    "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación.\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
   },
   "execution_rules": {
     "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",

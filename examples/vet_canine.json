@@ -99,9 +99,9 @@
   	  "available_info": "Has confirmado el diagnóstico de hipoadrenocorticismo primario. El paciente se encuentra estable pero requiere manejo agudo de la crisis addisoniana e inicio de terapia de reemplazo hormonal a largo plazo. Diseña un plan terapéutico completo que aborde tanto la estabilización inmediata como el manejo crónico.",
   	  "required_components": ["fluidoterapia", "glucocorticoide", "mineralocorticoide"],
   	  "component_feedback": [
-  	    {"component": "fluidoterapia", "feedback": "Estás en el camino correcto."},
-  	    {"component": "glucocorticoide", "feedback": "Bien. La suplementación con glucocorticoides es esencial."},
-  	    {"component": "mineralocorticoide", "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo."}
+  	    {"component": "fluidoterapia", "feedback": "Estás en el camino correcto. ¿Qué más?"},
+  	    {"component": "glucocorticoide", "feedback": "Bien. La suplementación con glucocorticoides es esencial. ¿Qué más?"},
+  	    {"component": "mineralocorticoide", "feedback": "Correcto. La reposición mineralocorticoide (DOCP o fludrocortisona) es clave para el manejo a largo plazo. ¿Qué más?"}
   	  ],
   	  "on_complete": "terminal_success",
   	  "hints": [
@@ -112,11 +112,11 @@
   "terminal_success": {
     "outcome": "success",
     "diagnosis": "Hipoadrenocorticismo primario (enfermedad de Addison)",
-    "feedback_template": "Has completado el caso con éxito. Llegaste al diagnóstico correcto de hipoadrenocorticismo primario y propusiste un plan terapéutico adecuado que incluye fluidoterapia, glucocorticoides y mineralocorticoides.\n\nPuntos fuertes observados en tu razonamiento:\n{strengths}\n\nÁreas de mejora:\n{improvements}\n\nReferencias sugeridas para profundizar:\n- Ettinger, Textbook of Veterinary Internal Medicine, cap. sobre Endocrinología adrenal\n- Plumb's Veterinary Drug Handbook, entradas de DOCP y fludrocortisona"
+    "feedback_template": "Has completado el caso con éxito. Llegaste al diagnóstico correcto de hipoadrenocorticismo primario y propusiste un plan terapéutico adecuado que incluye fluidoterapia, glucocorticoides y mineralocorticoides.\n\nReferencias sugeridas para profundizar:\n- Ettinger, Textbook of Veterinary Internal Medicine, cap. sobre Endocrinología adrenal\n- Plumb's Veterinary Drug Handbook, entradas de DOCP y fludrocortisona"
   },
   "terminal_failure": {
     "outcome": "failure",
-    "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario. Revisa los siguientes puntos:\n{missed_points}\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
+    "feedback_template": "El caso no se resolvió adecuadamente. El diagnóstico correcto era hipoadrenocorticismo primario.\n\nTe sugerimos repasar el patrón electrolítico clásico de Addison (relación Na/K < 27) y la interpretación de la prueba de estimulación con ACTH."
   },
   "execution_rules": {
 	"hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
