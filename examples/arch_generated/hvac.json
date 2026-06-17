@@ -1,310 +1,266 @@
 {
   "simulator_id": "hvac_industrial_refrigeration_001",
   "metadata": {
-    "domain": "Mantenimiento HVAC - Refrigeración Industrial",
-    "topic": "Diagnóstico de fallas en sistemas de refrigeración industrial",
+    "domain": "Diagnóstico de sistemas de refrigeración industrial",
+    "topic": "Diagnóstico de fallas en sistemas de refrigeración por compresión de vapor",
     "learning_objectives": [
-      "Aplicar diagnóstico sistemático en sistemas de refrigeración industrial mediante lectura de presiones y temperaturas",
-      "Diferenciar fallas por pérdida de refrigerante, contaminación con humedad y fallas mecánicas del compresor",
-      "Interpretar diagramas de presión-entalpía y lecturas de manifold para confirmar diagnóstico",
-      "Diseñar un plan de reparación y puesta en marcha que incluya verificación de hermeticidad y carga de refrigerante"
+      "Aplicar diagnóstico sistemático a partir de lecturas de presión y temperatura en el ciclo de refrigeración",
+      "Diferenciar fallas de origen mecánico, eléctrico y de carga de refrigerante",
+      "Interpretar diagramas de presión-entalpia y condiciones operativas anómalas",
+      "Proponer planes de corrección que incluyan causa raíz y medidas preventivas"
     ]
   },
   "presentation": {
-    "intro": "Un técnico de guardia te llama reportando que la cámara frigorífica de una planta procesadora de alimentos no está manteniendo temperatura. La cámara debería estar a -18°C (producto congelado) pero lleva 4 horas marcando -8°C y bajando lentamente. El sistema usa un compresor semi-hermético Copeland de 20 HP con refrigerante R-404A. El operador comenta que hace dos semanas realizaron una intervención en el evaporador para corregir una fuga de agua del sistema de deshielo.",
+    "intro": "El supervisor de planta te llama urgente: la cámara frigorífica de un frigorífico industrial dejó de enfriar correctamente. El cuarto frío de almacenamiento de productos cárnicos (diseñado para operar a -18°C) lleva 4 horas sin bajar de -6°C. El compresor sigue corriendo continuamente sin ciclar. La alarma de alta temperatura del cuarto ya disparó.",
     "context": [
       {
-        "label": "Sistema",
-        "value": "Refrigeración industrial, R-404A, compresor semi-hermético Copeland 20 HP"
+        "label": "Equipo",
+        "value": "Sistema de refrigeración industrial, compresor semi-hermético de 15 HP, refrigerante R-404A"
+      },
+      {
+        "label": "Temperatura de diseño",
+        "value": "-18°C en cámara frigorífica"
       },
       {
         "label": "Síntoma principal",
-        "value": "Cámara de congelados no mantiene -18°C, actualmente en -8°C"
+        "value": "Temperatura actual -6°C, compresor corriendo continuo sin alcanzar set point"
       },
       {
-        "label": "Historial reciente",
-        "value": "Intervención en evaporador hace 2 semanas (reparación de fuga del sistema de deshielo)"
+        "label": "Tiempo del problema",
+        "value": "4 horas desde que se detectó la falla"
       },
       {
-        "label": "Condición ambiental",
-        "value": "Temperatura de sala de máquinas: 28°C"
+        "label": "Historial",
+        "value": "El sistema lleva 8 años operando. Último mantenimiento preventivo hace 14 meses"
       }
-    ],
-    "initial_prompt": "Llegas a la sala de máquinas. ¿Cómo abordarías el diagnóstico de este sistema? ¿Qué verificarías primero?"
+    ]
   },
   "decision_nodes": [
     {
       "id": "n1",
-      "stage": "Inspección visual y verificación operativa inicial",
-      "available_info": "Al ingresar a la sala de máquinas el compresor está en marcha, el condensador evaporativo opera normalmente. Se escucha el compresor sin golpeteos ni ruidos anormales. Las válvulas de servicio están abiertas. El visor de líquido sobre la línea de líquido muestra burbujeo continuo y el indicador de humedad está en color AMARILLO (advertencia de humedad) en lugar del verde esperado.",
+      "stage": "Inspección inicial del sistema",
+      "available_info": "Al llegar al cuarto de máquinas, el compresor está corriendo. Los manómetros del tablero muestran: presión de succión 0.8 bar (valor normal para R-404A a -18°C: ~2.0 bar), presión de descarga 14.2 bar (normal: 12–16 bar). El compresor está sudando en el cuerpo y en la línea de succión. La temperatura de la línea de descarga medida con termómetro infrarrojo es 105°C.\n\n¿Qué información adicional levantarías primero y cómo procederías en esta inspección inicial?",
       "expected_actions": [
         {
           "action_keywords": [
-            "inspección visual",
-            "revisar visualmente",
-            "observar equipo",
-            "ver visor de líquido",
-            "visor de líquido",
-            "burbujeo",
-            "indicador humedad"
-          ],
-          "feedback": "Muy bien. La inspección visual revela dos hallazgos críticos: burbujeo en el visor de líquido (indica refrigerante insuficiente o temperatura de subenfriamiento inadecuada) y el indicador de humedad en amarillo (posible contaminación con agua). Ambos hallazgos están relacionados con la intervención reciente en el evaporador. Continúa con la lectura de presiones.",
-          "next": "n2",
-          "penalty": null
-        },
-        {
-          "action_keywords": [
-            "manifold",
+            "presión succión",
+            "presión baja",
+            "baja succión",
             "manómetros",
             "leer presiones",
-            "conectar manifold",
-            "presiones de operación"
+            "lecturas de presión"
           ],
-          "feedback": "Conectar el manifold es un paso correcto y temprano en refrigeración. Lecturas obtenidas: presión de succión 0.8 bar (esperado ~2.4 bar para R-404A a -18°C), presión de descarga 18.5 bar (normal). La baja presión de succión es un hallazgo importante. ¿Qué más observas en el sistema antes de sacar conclusiones?",
+          "feedback": "✅ Correcto. Las presiones son el punto de partida clave. La presión de succión de 0.8 bar equivale a una temperatura de saturación de aproximadamente -46°C — muy por debajo del set point de la cámara. Eso indica que el refrigerante está llegando al evaporador con mucha menos energía de la necesaria. La descarga en rango normal descarta una falla del condensador. ¿Continúa tu diagnóstico.",
           "next": "n2",
-          "penalty": "minor"
+          "penalty": null
         },
         {
           "action_keywords": [
             "temperatura cámara",
-            "sensor temperatura",
-            "verificar sonda",
-            "termómetro cámara"
+            "termómetro cámara",
+            "verificar temperatura cuarto",
+            "sensor temperatura"
           ],
-          "feedback": "Verificar la temperatura de la cámara confirma el síntoma pero no te acerca al origen de la falla. La cámara efectivamente está a -8°C. Para diagnosticar necesitas evaluar el sistema mecánico y frigorífico, no solo confirmar lo que ya sabes.",
-          "next": "n1",
+          "feedback": "✅ Verificar la temperatura real de la cámara es una buena práctica para confirmar la alarma. La lectura del sensor confirma -6°C, y el producto más cercano al evaporador ya marca -3°C. Sin embargo, para diagnosticar la falla mecánica necesitas ir a los manómetros. Procede con las lecturas de presión.",
+          "next": "n2",
           "penalty": "minor"
         },
         {
           "action_keywords": [
-            "revisar compresor",
-            "inspeccionar compresor",
-            "amperaje compresor",
-            "consumo compresor"
+            "inspección visual",
+            "revisar fugas",
+            "buscar fugas refrigerante",
+            "detectar fugas",
+            "olfato",
+            "burbujeo"
           ],
-          "feedback": "Medir el consumo del compresor es útil pero prematuro sin antes hacer una inspección visual del sistema completo. El amperaje del compresor está en 18A (la placa indica 22A nominal) — consumo bajo, consistente con baja carga de refrigerante. Aun así, conviene revisar el sistema de forma más integral primero.",
+          "feedback": "✅ Buena iniciativa. Una inspección visual y olfativa es siempre parte del protocolo. No observas aceite en conexiones ni señales visuales de fuga. Sin embargo, el diagnóstico confirmatorio requiere lectura de presiones. Procede con los manómetros.",
           "next": "n2",
           "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "apagar equipo",
+            "parar compresor",
+            "desconectar sistema",
+            "cortar energía"
+          ],
+          "feedback": "❌ Apagar el sistema sin diagnóstico previo puede complicar la evaluación y agrava la situación del producto almacenado. Primero debes diagnosticar con el sistema en operación para obtener lecturas representativas.",
+          "next": "n1",
+          "penalty": "major"
         }
       ],
       "hints": [
-        "Antes de conectar instrumentos, ¿qué información puedes obtener recorriendo visualmente la sala de máquinas? Presta atención a todos los componentes del circuito frigorífico.",
-        "El visor de líquido no solo indica estado del flujo — tiene un segundo indicador. ¿Lo revisaste?",
-        "El historial menciona una intervención reciente. Los componentes intervenidos son siempre puntos de inspección prioritaria."
+        "El compresor lleva horas corriendo sin alcanzar el set point. ¿Qué instrumentos del cuarto de máquinas te dan información inmediata sobre el estado del ciclo de refrigeración?",
+        "Los manómetros de succión y descarga son la 'presión arterial' del sistema. ¿Qué te dicen los valores actuales comparados con los valores normales?"
       ]
     },
     {
       "id": "n2",
-      "stage": "Lectura e interpretación de presiones y temperaturas",
-      "available_info": "Manifold conectado en válvulas de servicio del compresor. Lecturas: Presión de succión: 0.8 bar (temperatura de saturación equivalente: -40°C). Presión de descarga: 18.5 bar (temperatura de saturación: ~40°C, normal para condensación con 28°C ambiente). Temperatura real de línea de succión (termómetro de contacto): -15°C. Temperatura de línea de líquido: 32°C. Subenfriamiento calculado: ~8°C (aceptable). Superheat en succión: ~25°C (elevado, esperado 5-10°C). Indicador de humedad: AMARILLO.",
+      "stage": "Diagnóstico diferencial",
+      "available_info": "Resumen de hallazgos hasta ahora: presión de succión muy baja (0.8 bar vs. 2.0 bar normal), presión de descarga normal (14.2 bar), compresor sudando y frío en cuerpo y línea de succión, temperatura de descarga 105°C (ligeramente alta pero dentro de rango), compresor corriendo continuo. El técnico anterior anotó en la bitácora que hace 3 semanas se reemplazó el filtro deshidratador.\n\n¿Cuál es tu diagnóstico diferencial principal para explicar la presión de succión baja con descarga normal?",
       "expected_actions": [
         {
           "action_keywords": [
-            "baja presión succión",
-            "presión succión baja",
-            "falta refrigerante",
-            "pérdida refrigerante",
-            "fuga refrigerante",
+            "fuga de refrigerante",
+            "pérdida de refrigerante",
+            "falta de gas",
+            "carga baja",
+            "undercharge",
             "refrigerante insuficiente"
           ],
-          "feedback": "Correcto. La presión de succión de 0.8 bar equivale a una temperatura de saturación de -40°C, muy por debajo del set point de -18°C. Esto, combinado con el superheat elevado (25°C) y el burbujeo en el visor, confirma que hay refrigerante insuficiente en el sistema — probablemente por una fuga. Pero hay otro hallazgo igualmente importante que no debes ignorar. ¿Cuál es?",
+          "feedback": "✅ Muy bien. Una carga baja de refrigerante explica perfectamente la presión de succión baja con descarga relativamente normal: hay menos masa de refrigerante circulando, el evaporador no se llena correctamente y la presión cae. Es el diferencial más probable. ¿Qué prueba realizarías para confirmarlo?",
           "next": "n3",
           "penalty": null
         },
         {
           "action_keywords": [
-            "humedad",
-            "contaminación humedad",
-            "indicador amarillo",
-            "moisture",
-            "ácido"
+            "válvula de expansión",
+            "TEV",
+            "TXV",
+            "restricción válvula",
+            "válvula bloqueada",
+            "taponamiento válvula"
           ],
-          "feedback": "Buen ojo. El indicador amarillo señala presencia de humedad en el sistema — un hallazgo grave en refrigeración. La humedad puede provenir del sistema de deshielo intervenido recientemente. Sin embargo, también hay un problema de carga de refrigerante que debes considerar. Integra ambos hallazgos para un diagnóstico completo.",
-          "next": "n3",
-          "penalty": null
+          "feedback": "⚠️ Es un diferencial válido y a tener en cuenta. Una TEV cerrada parcialmente o bloqueada también produce presión de succión baja. Sin embargo, en ese caso esperarías la línea de líquido muy fría o escarcha antes de la válvula, y la descarga tendería a bajar también. Anota este diferencial, pero revisa si hay otro factor más frecuente dado el historial de mantenimiento.",
+          "next": "n2",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "filtro deshidratador",
+            "restricción filtro",
+            "filtro tapado",
+            "deshidratador bloqueado"
+          ],
+          "feedback": "⚠️ Posible. Una restricción en el filtro deshidratador (recién reemplazado hace 3 semanas) podría causar baja presión de succión si causó una restricción de flujo. Sin embargo, este diferencial generalmente produce escarcha o frío intenso justo después del filtro. Sigue siendo menos probable que otra causa más fundamental. ¿Cuál es la causa más común de presión de succión baja en un sistema de 8 años?",
+          "next": "n2",
+          "penalty": "minor"
         },
         {
           "action_keywords": [
             "falla compresor",
             "compresor dañado",
             "válvulas compresor",
-            "eficiencia volumétrica"
+            "compresor desgastado"
           ],
-          "feedback": "El compresor podría ser sospechoso, pero los datos no lo señalan como origen principal: no hay ruidos, la presión de descarga es normal (18.5 bar) y el diferencial de presión es adecuado. Un compresor con válvulas dañadas mostraría presión de descarga baja y succión alta — aquí es al revés. Revisa los datos con más atención.",
+          "feedback": "❌ Una falla interna del compresor (válvulas rotas, pistones desgastados) generalmente produce presión de succión ALTA (no baja) porque el compresor no puede aspirar bien, y además la descarga cae notablemente. El patrón aquí es diferente — descarga normal con succión muy baja.",
           "next": "n2",
           "penalty": "moderate"
-        },
-        {
-          "action_keywords": [
-            "válvula expansión",
-            "TEV",
-            "TXV",
-            "válvula termostática",
-            "restricción"
-          ],
-          "feedback": "Una válvula de expansión defectuosa podría causar superheat elevado, pero no explica el burbujeo en el visor ni la pérdida de presión tan marcada en succión. Además, una restricción en la válvula no explica el indicador de humedad. Busca un diagnóstico que integre todos los hallazgos.",
-          "next": "n2",
-          "penalty": "minor"
         }
       ],
       "hints": [
-        "Tienes tres hallazgos clave: presión de succión muy baja, superheat elevado y visor con burbujeo. ¿Qué condición los explica a todos juntos?",
-        "Convierte la presión de succión a temperatura de saturación usando tablas de R-404A. ¿Qué te dice eso comparado con el set point de la cámara?",
-        "No ignores el indicador de humedad amarillo — es el segundo hallazgo independiente que debes integrar a tu diagnóstico diferencial."
+        "La presión de succión está en 0.8 bar cuando debería estar en 2.0 bar. Pero la descarga es normal. ¿Qué condición hace que haya menos refrigerante en el lado de baja presión?",
+        "El sistema lleva 8 años en operación y el mantenimiento fue hace más de un año. ¿Cuál es la falla más frecuente en sistemas de refrigeración de esa antigüedad?",
+        "Piensa en la masa de refrigerante circulando: si hay menos refrigerante en el sistema, ¿qué le pasa a la presión de succión?"
       ]
     },
     {
       "id": "n3",
-      "stage": "Localización de la fuga y evaluación de contaminación",
-      "available_info": "Diagnóstico preliminar: sistema con refrigerante insuficiente (fuga) + posible contaminación con humedad. Herramientas disponibles: detector electrónico de fugas, detector de halógenos, agua jabonosa, kit de análisis de aceite por colorimetría.",
+      "stage": "Confirmación diagnóstica y localización de fuga",
+      "available_info": "Sospechas fuertemente de carga baja de refrigerante por fuga. Tienes disponibles: detector electrónico de fugas, solución jabonosa, balanza de carga, manifold de presiones calibrado, y termómetro de contacto.\n\n¿Qué procedimiento seguirías para confirmar la fuga y localizarla?",
       "expected_actions": [
         {
           "action_keywords": [
-            "detector fugas",
-            "buscar fuga",
             "detector electrónico",
-            "agua jabonosa",
-            "localizar fuga"
+            "detector de fugas",
+            "leak detector",
+            "sniffer",
+            "buscafugas electrónico"
           ],
-          "feedback": "Correcto. Se procede con detector electrónico de fugas. La alarma se activa en la zona de conexiones del evaporador — específicamente en una unión soldada en el retorno de gas, precisamente donde se realizó la intervención hace dos semanas. Se confirma fuga activa. Ahora necesitas evaluar el grado de contaminación por humedad.",
-          "next": "n4",
-          "penalty": null
-        },
-        {
-          "action_keywords": [
-            "análisis aceite",
-            "kit aceite",
-            "colorimetría aceite",
-            "acidez aceite"
-          ],
-          "feedback": "Buena iniciativa. El análisis colorimétrico del aceite muestra viraje a color anaranjado-rojo, indicando acidez — señal de que la humedad ya reaccionó con el refrigerante y el aceite generando ácido fluorhídrico/clorhídrico. Este es un hallazgo grave. Sin embargo, aún necesitas localizar físicamente la fuga antes de planificar la reparación.",
-          "next": "n4",
-          "penalty": "minor"
-        },
-        {
-          "action_keywords": [
-            "vacío",
-            "hacer vacío",
-            "vacuómetro",
-            "prueba vacío"
-          ],
-          "feedback": "Hacer vacío es parte del proceso de reparación, no de diagnóstico. No puedes hacer vacío con el sistema en operación y con fuga activa sin antes localizar y reparar la fuga. Esto causaría pérdida del refrigerante restante y podría dañar el compresor.",
-          "next": "n3",
-          "penalty": "major"
-        },
-        {
-          "action_keywords": [
-            "cargar refrigerante",
-            "agregar gas",
-            "recargar",
-            "añadir R-404A"
-          ],
-          "feedback": "Agregar refrigerante sin localizar y reparar la fuga primero es incorrecto — perderías el refrigerante añadido y no resolverías el problema. Además, con humedad presente en el sistema, primero debes tratar la contaminación. Es un procedimiento que causaría daños adicionales.",
-          "next": "n3",
-          "penalty": "major"
-        }
-      ],
-      "hints": [
-        "Tienes un diagnóstico preliminar dual. ¿Cuál de los dos problemas debes confirmar y localizar físicamente primero para poder planificar la reparación?",
-        "El historial de intervención reciente en el evaporador es una pista muy valiosa. ¿Dónde empezarías a buscar la fuga?",
-        "Recuerda que agregar refrigerante sin reparar una fuga activa no es diagnóstico — es enmascarar el problema."
-      ]
-    },
-    {
-      "id": "n4",
-      "stage": "Evaluación del grado de contaminación y plan de remediación",
-      "available_info": "Fuga confirmada y localizada: unión soldada en retorno de gas del evaporador (zona de intervención previa). Análisis de aceite: acidez confirmada (viraje colorimétrico positivo). El sistema lleva operando con humedad por al menos 2 semanas según el historial. Tiempo estimado de exposición: suficiente para formación de ácidos en el circuito.",
-      "expected_actions": [
-        {
-          "action_keywords": [
-            "filtro secador",
-            "cambiar filtro",
-            "reemplazar filtro secador",
-            "drier",
-            "secador"
-          ],
-          "feedback": "Correcto y obligatorio. Con contaminación por humedad confirmada, el filtro secador (drier) debe reemplazarse — probablemente está saturado. En casos de contaminación severa, se recomienda un secador oversized en la línea de líquido y posiblemente uno adicional en la línea de succión. ¿Qué más incluiría tu plan de remediación?",
+          "feedback": "✅ Correcto. El detector electrónico de fugas es la herramienta estándar para R-404A. Pasas el detector por: conexiones de válvulas de servicio, bridas del evaporador, líneas de cobre en la cámara, empaques del compresor y conexiones del condensador. Resultado: el detector alarma de forma sostenida en la conexión de entrada del evaporador — se detecta una fuga en el fitting de cobre que une la línea de líquido con la entrada de la TEV. Hay señal de aceite acumulado en esa zona.",
           "next": "accumulator",
           "penalty": null
         },
         {
           "action_keywords": [
-            "flush sistema",
-            "limpiar circuito",
-            "purgar sistema",
-            "flush refrigerante"
+            "solución jabonosa",
+            "jabón",
+            "espuma jabonosa",
+            "agua jabonosa"
           ],
-          "feedback": "En casos de contaminación ácida severa, el flush del sistema es una medida válida y en algunos casos necesaria. Sin embargo, en sistemas de refrigeración industrial con compresor semi-hermético, el flush completo es complejo y costoso — la práctica estándar prioriza el cambio de aceite, filtros secadores y múltiples ciclos de vacío profundo. ¿Integras esto junto con las demás acciones necesarias?",
-          "next": "accumulator",
+          "feedback": "⚠️ La solución jabonosa sirve para confirmar fugas visibles pero no detecta fugas pequeñas ni en zonas de difícil acceso. Para R-404A en un sistema industrial es recomendable el detector electrónico como primer paso. Úsala como complemento en la zona donde el detector alarme.",
+          "next": "n3",
           "penalty": "minor"
         },
         {
           "action_keywords": [
-            "solo reparar fuga",
-            "soldar",
-            "reparar unión",
-            "parchear fuga"
+            "pesar refrigerante",
+            "balanza de carga",
+            "verificar carga",
+            "peso refrigerante",
+            "cuánto refrigerante"
           ],
-          "feedback": "Reparar la fuga es necesario pero absolutamente insuficiente en este caso. Tienes contaminación ácida confirmada en el aceite. Si solo soldas la fuga y recargas refrigerante sin tratar la contaminación, el ácido continuará dañando el compresor, la válvula de expansión y otros componentes internos. Debes incluir tratamiento de la contaminación.",
-          "next": "n4",
-          "penalty": "moderate"
+          "feedback": "⚠️ Pesar la carga remanente es útil para cuantificar la pérdida, pero no te dice dónde está la fuga. Primero debes localizar y reparar la fuga antes de recargar — de lo contrario el refrigerante nuevo se perderá también.",
+          "next": "n3",
+          "penalty": "minor"
+        },
+        {
+          "action_keywords": [
+            "recargar refrigerante",
+            "añadir gas",
+            "cargar sistema",
+            "agregar refrigerante"
+          ],
+          "feedback": "❌ Recargar sin localizar y reparar la fuga primero es un error grave. El refrigerante se perderá nuevamente, generarás un costo innecesario y el sistema seguirá fallando. Además, en muchos países verter refrigerante al ambiente es una violación ambiental. Primero localiza la fuga.",
+          "next": "n3",
+          "penalty": "major"
         }
       ],
       "hints": [
-        "Tienes dos problemas confirmados: fuga física y contaminación química. Tu plan debe abordar ambos de forma independiente.",
-        "La contaminación ácida en el aceite afecta principalmente al compresor. ¿Qué componente del circuito atrapa la humedad y los ácidos?",
-        "Piensa en los pasos estándar post-contaminación: componente de absorción, renovación del lubricante y protocolo de vacío."
+        "Necesitas una herramienta que detecte vapor de refrigerante en el ambiente. ¿Cuál es el método recomendado para localizar fugas en sistemas con refrigerante HFC como el R-404A?",
+        "Busca también señales indirectas: acumulación de aceite en una zona específica es indicio de fuga prolongada, ya que el aceite sale junto con el refrigerante."
       ]
     }
   ],
   "accumulator": {
-    "stage": "Plan de reparación y puesta en marcha",
-    "available_info": "Has identificado y confirmado: (1) fuga activa en unión soldada del evaporador y (2) contaminación del sistema con humedad y formación de ácidos en el aceite. Diseña un plan de reparación completo, ordenado y seguro que permita devolver el sistema a operación normal en -18°C con garantías de confiabilidad.",
+    "stage": "Plan de corrección y puesta en marcha",
+    "available_info": "Has confirmado: fuga de refrigerante en el fitting de la línea de líquido a la entrada de la TEV, con pérdida significativa de carga. La fuga está localizada y el sistema lleva 8 años en operación con más de 14 meses sin mantenimiento preventivo. Diseña un plan de corrección completo que garantice la reparación definitiva, la recarga correcta del sistema y la prevención de recurrencia.",
     "required_components": [
-      "reparación de fuga",
-      "cambio de aceite del compresor",
-      "reemplazo de filtro secador",
-      "vacío profundo y carga de refrigerante"
+      "reparación de la fuga",
+      "evacuación y vacío del sistema",
+      "recarga de refrigerante R-404A",
+      "verificación de operación y ajuste de TEV"
     ],
     "component_feedback": [
       {
-        "component": "reparación de fuga",
-        "feedback": "Correcto. La reparación de la unión soldada en el evaporador es el primer paso físico. ¿Qué más incluirías para tratar la contaminación?"
+        "component": "reparación de la fuga",
+        "feedback": "Correcto. Antes de cualquier otra acción se debe reparar el fitting defectuoso o reemplazar la conexión. ¿Qué más incluirías en el plan?"
       },
       {
-        "component": "cambio de aceite del compresor",
-        "feedback": "Bien. El aceite contaminado con ácidos debe ser reemplazado — de lo contrario continuará degradando los componentes internos del compresor. ¿Qué otros pasos son necesarios para asegurar la limpieza del circuito?"
+        "component": "evacuación y vacío del sistema",
+        "feedback": "Excelente. Tras la reparación es obligatorio hacer triple evacuación con bomba de vacío hasta al menos 500 micrones antes de recargar — se pudo haber ingresado aire y humedad. ¿Qué más?"
       },
       {
-        "component": "reemplazo de filtro secador",
-        "feedback": "Excelente. El filtro secador nuevo absorberá la humedad residual. En sistemas con contaminación severa se recomienda usar un secador de mayor capacidad. ¿Queda algo antes de recargar el sistema?"
+        "component": "recarga de refrigerante R-404A",
+        "feedback": "Correcto. La recarga debe hacerse por peso (en fase líquida para mezclas zeótropas como R-404A) según la carga nominal del equipo. ¿Qué más falta para cerrar el plan?"
       },
       {
-        "component": "vacío profundo y carga de refrigerante",
-        "feedback": "Perfecto. El vacío profundo (mínimo 500 micrones, idealmente <300 micrones) elimina humedad residual y verifica hermeticidad antes de la carga. Una vez alcanzado y sostenido el vacío, se procede a la carga de R-404A por peso según especificación del sistema. Si tu plan incluye los cuatro componentes, el caso está resuelto."
+        "component": "verificación de operación y ajuste de TEV",
+        "feedback": "Muy bien. Tras la recarga hay que verificar presiones de operación, superheat en succión y subenfriamiento en descarga, y ajustar la TEV si es necesario para optimizar el rendimiento. El plan está completo."
       }
     ],
     "on_complete": "terminal_success",
     "hints": [
-      "El plan debe tener dos fases: reparación física (fuga) y remediación química (contaminación). No omitas ninguna.",
-      "Piensa en el orden lógico: primero reparar la fuga, luego eliminar la contaminación, luego evacuar y finalmente cargar.",
-      "El compresor ha estado en contacto con aceite ácido por 2 semanas. ¿Qué acción directa sobre el compresor es indispensable?"
+      "Un plan completo tiene cuatro fases: eliminar la fuga, preparar el sistema para la nueva carga, recargar correctamente y verificar que el sistema opera dentro de parámetros.",
+      "Recuerda que R-404A es una mezcla zeotrópica — la forma correcta de cargarlo importa. ¿Cómo se carga una mezcla zeotrópica?",
+      "¿Qué pasa con el vacío y la humedad si el sistema estuvo con fuga durante semanas? ¿Cómo lo corriges antes de recargar?"
     ]
   },
   "terminal_success": {
     "outcome": "success",
-    "diagnosis": "Fuga de refrigerante R-404A en unión soldada del evaporador con contaminación por humedad y acidez del aceite",
-    "feedback_template": "Excelente trabajo. Has diagnosticado correctamente un sistema con fuga activa de refrigerante combinada con contaminación por humedad, y propusiste un plan de reparación integral y ordenado.\n\nPuntos fuertes en tu razonamiento:\n{strengths}\n\nÁreas de mejora identificadas:\n{improvements}\n\nReferencias técnicas recomendadas:\n- ASHRAE Handbook — Refrigeration, capítulo sobre contaminación por humedad y ácidos\n- Copeland Application Engineering Bulletin AE-1234: Diagnóstico y reparación post-contaminación\n- RSES Technical Manual: Procedimientos de vacío profundo y verificación de hermeticidad\n- Tablas de presión-temperatura R-404A (Honeywell/Chemours)"
+    "diagnosis": "Fuga de refrigerante R-404A en fitting de línea de líquido — carga insuficiente con baja presión de succión",
+    "feedback_template": "Has resuelto el caso correctamente. Identificaste la fuga de refrigerante como causa raíz de la baja presión de succión y la pérdida de capacidad frigorífica, la localizaste con detector electrónico y propusiste un plan de corrección completo: reparación del fitting, evacuación, recarga por peso y verificación de operación.\n\nBuenas prácticas adicionales a considerar:\n— Registrar la cantidad de refrigerante perdido y el histórico de recargas (obligatorio en muchas normativas como el Reglamento (UE) 517/2014 para gases fluorados)\n— Proponer al cliente un programa de mantenimiento preventivo con verificación semestral de presiones y detección de fugas\n— Considerar reemplazar el filtro deshidratador nuevamente tras la reparación, ya que pudo absorber humedad durante la fuga\n\nReferencias técnicas sugeridas:\n— ASHRAE Handbook — Refrigeration, Cap. 2: Sistemas de compresión de vapor\n— Honeywell R-404A Technical Data Sheet\n— RSES (Refrigeration Service Engineers Society) — Leak Detection Procedures"
   },
   "terminal_failure": {
     "outcome": "failure",
-    "feedback_template": "El diagnóstico no se completó adecuadamente. El caso correspondía a una fuga de refrigerante con contaminación por humedad en un sistema R-404A de refrigeración industrial.\n\nPuntos no identificados o mal abordados:\n{missed_points}\n\nTe recomendamos repasar:\n- Interpretación de lecturas de manifold en R-404A: relación entre presión de succión, temperatura de saturación y superheat\n- Significado del indicador de humedad en el visor de líquido\n- Protocolo estándar post-contaminación: cambio de aceite, filtros secadores y vacío profundo"
+    "feedback_template": "El diagnóstico no se completó adecuadamente. La causa raíz era una fuga de refrigerante R-404A en el fitting de la línea de líquido, que provocó una carga insuficiente y una presión de succión anormalmente baja.\n\nTe recomendamos repasar:\n— Interpretación de presiones de succión y descarga en sistemas R-404A\n— Relación entre carga de refrigerante y presión de saturación en el evaporador\n— Procedimiento correcto de detección y localización de fugas en sistemas de refrigeración industrial\n— Normas de manejo de refrigerantes HFC (no se debe recargar sin reparar la fuga)"
   },
   "execution_rules": {
     "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
-    "max_hints_per_node": 3,
+    "max_hints_per_node": 2,
     "off_path_def": "The user's message is entirely unrelated to the case",
-    "default_off_path_response": "Esa consulta no corresponde al caso que estamos diagnosticando. Mantengámonos enfocados en el sistema de refrigeración de la planta.",
+    "default_off_path_response": "Esa consulta está fuera del contexto de este diagnóstico. Mantengámonos enfocados en el sistema de refrigeración de la cámara frigorífica.",
     "off_path_max_attempts": 3
   }
 }
