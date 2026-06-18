@@ -50,7 +50,6 @@ The following strings describe when a hint should be offered to the user and whe
 - off_path_def: "The user's message is entirely unrelated to the case"
 
 **Quality**
-- If the user initial prompt is not asking for a simulator specifically, change the value of simulator_id to null
 - Cases should reflect realistic, domain-appropriate situations.
 - Stage labels and available_info should use vocabulary native to the domain (e.g., "Anamnesis" for veterinary, "Inspección inicial" for automotive, "Calificación de los hechos" for legal).
 - Available_info in decision nodes typically reveals new data the user has uncovered by taking the right action in the previous node. In the accumulator, available_info is more of a problem statement than fresh data.

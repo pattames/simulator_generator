@@ -1,7 +1,8 @@
 import sys
-import json
 
 from architect.generator import generate_tree
+from executor.runner import run_simulator
+
 
 def main() -> None:
     # Handle user prompt
@@ -13,20 +14,32 @@ def main() -> None:
     # Handle tree generation
     try:
         tree = generate_tree(user_prompt)
-    except Exception:
-        print("Tree not generated properly, try reformulating your prompt")
+    except Exception as e:
+        print(f"Tree not generated properly: {e}")
+        print("Try reformulating your prompt.")
         sys.exit(1)
 
-    if tree is None or tree.simulator_id is None:
-        print("Invalid instruction, please try with a valid prompt")
+    if tree is None:
+        print("Tree generation returned no result. Try again.")
         sys.exit(1)
 
     # Tree presentation
     print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
     print(f"• Domain: {tree.metadata.domain}")
     print(f"• Topic: {tree.metadata.topic}")
+    print("• Learning Objectives:")
+    for objective in tree.metadata.learning_objectives:
+        print(f"    - {objective}")
+    print()
     
-    print(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
+    # Choice to continue or exit
+    choice = input("[c]ontinue or [q]uit? ").strip().lower()
+    if choice != "c":
+        sys.exit(0)
+
+    # Execute simulator
+    run_simulator(tree)
+
 
 if __name__ == "__main__":
     main()
