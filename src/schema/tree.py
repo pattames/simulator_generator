@@ -56,7 +56,7 @@ class Metadata(BaseModel):
     learning_objectives: list[str] = Field(min_length=1)
 
 class SimulatorTree(BaseModel):
-    simulator_id: str
+    simulator_id: str | None
     metadata: Metadata
     presentation: Presentation
     decision_nodes: list[DecisionNode] = Field(
