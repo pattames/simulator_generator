@@ -60,7 +60,7 @@ def save_tree(tree: SimulatorTree) -> None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = tree_dir / f"{tree.simulator_id}_{timestamp}.json"
     path.write_text(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
-    print(f"\n(Decision tree saved to {path})")
+    print(f"(Decision tree saved to {path}\n)")
 
 
 # To test with user prompt as CLI's argument
