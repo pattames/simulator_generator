@@ -85,4 +85,8 @@ def validate_simulator_request(user_prompt: str) -> bool:
     return raw.strip().lower().startswith("y")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Cancelled by user.")
+        sys.exit(130)
