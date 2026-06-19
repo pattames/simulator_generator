@@ -1,7 +1,13 @@
 import sys
 
+from dotenv import load_dotenv
+from groq import Groq
+
 from architect.generator import generate_tree
 from executor.runner import run_simulator
+
+load_dotenv()
+groq_client = Groq()
 
 
 def main() -> None:
@@ -10,6 +16,10 @@ def main() -> None:
         print("Program needs a single prompt to be passed as an argument")
         sys.exit(1)
     user_prompt = sys.argv[1]
+
+    if not validate_simulator_request(user_prompt):
+        print("Your prompt doesn't appear to be a simulator request.")
+        sys.exit(1)
 
     # Handle tree generation
     try:
@@ -40,6 +50,39 @@ def main() -> None:
     # Execute simulator
     run_simulator(tree)
 
+
+SYSTEM_PROMPT = """Your job is to determine whether a user's message expresses intent to obtain a simulator about some topic or domain. Polite phrasings, indirect requests, conditional phrasings ("could you...", "I'd like...", "would it be possible..."), and direct commands all count as "yes" if the user's underlying intent is to receive a simulator.
+
+Examples:
+- "I want a simulator for legal case analysis" → yes
+- "Could you generate a simulator about veterinary cases?" → yes
+- "Podrías generar un simulador sobre un caso veterinario?" → yes
+- "Quiero un simulador para diagnosticar problemas en motores" → yes
+- "Make me a training simulator for incident response" → yes
+- "What's the capital of France?" → no
+- "Tell me a joke" → no
+- "Hello, how are you?" → no
+- "Explain quantum mechanics to me" → no
+
+Answer with exactly one word: "yes" or "no". Nothing else."""
+
+
+def validate_simulator_request(user_prompt: str) -> bool:
+    response = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        temperature=0,
+        max_tokens=5,
+    )
+
+    raw = response.choices[0].message.content
+    if raw is None:
+        raise RuntimeError("Empty validator response")
+    
+    return raw.strip().lower().startswith("y")
 
 if __name__ == "__main__":
     main()
