@@ -51,7 +51,7 @@ def tree_presentation(tree: SimulatorTree) -> None:
     for objective in tree.metadata.learning_objectives:
         print(f"    - {objective}")
     print(f"• Hints allowed per stage: {tree.execution_rules.max_hints_per_node}")
-    print(f"• Non-related queries allowed: {tree.execution_rules.off_path_max_attempts}")
+    print(f"• Non-related queries allowed per session: {tree.execution_rules.off_path_max_attempts}")
     print()
 
 def save_tree(tree: SimulatorTree) -> None:
