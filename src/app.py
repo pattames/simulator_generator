@@ -88,5 +88,5 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Cancelled by user.")
+        print("\nCancelled by user.")
         sys.exit(130)
