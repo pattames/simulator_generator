@@ -47,9 +47,11 @@ def tree_presentation(tree: SimulatorTree) -> None:
     print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
     print(f"• Domain: {tree.metadata.domain}")
     print(f"• Topic: {tree.metadata.topic}")
-    print("• Learning Objectives:")
+    print("• Learning objectives:")
     for objective in tree.metadata.learning_objectives:
         print(f"    - {objective}")
+    print(f"• Hints allowed per stage: {tree.execution_rules.max_hints_per_node}")
+    print(f"• Non-related queries allowed: {tree.execution_rules.off_path_max_attempts}")
     print()
 
 def save_tree(tree: SimulatorTree) -> None:
