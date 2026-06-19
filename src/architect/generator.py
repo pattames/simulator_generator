@@ -11,7 +11,7 @@ from schema.tree import SimulatorTree
 
 load_dotenv()
 
-prompt_template = Template(Path("src/architect/prompt.md").read_text())
+prompt_template = Template(Path("architect/prompt.md").read_text())
 ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
     auto_example=Path("examples/auto_fuel_pump.json").read_text(),
     vet_example=Path("examples/vet_canine.json").read_text(),
@@ -60,7 +60,7 @@ def save_tree(tree: SimulatorTree) -> None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = tree_dir / f"{tree.simulator_id}_{timestamp}.json"
     path.write_text(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
-    print(f"(Decision tree saved to {path}\n)")
+    print(f"(Decision tree saved to {path})\n")
 
 
 # To test with user prompt as CLI's argument
