@@ -27,11 +27,13 @@ $vet_example
 **Decision nodes**
 - Must be an ordered list of 3-5 nodes
 - Each decision node has an id field following the pattern n1, n2, n3, …, matching its position in the list.
+- The available_info field should not imply that the user has to give multiple answers to move on to the next node.
 - For each, include 2–4 expected_actions: at least one correct path (no penalty, advances to the next node) and one or more plausible wrong answers with appropriate penalties that loop back to the same node.
 - Penalty levels:
   - minor — on-topic but suboptimal sequencing or premature step
   - moderate — plausible but incorrect reasoning or wrong differential
   - major — would cause harm or reflects fundamental misunderstanding
+- Feedback strings for correct actions (actions that point to the following node) must not pose follow-up questions or imply that additional answers are required to advance.
 - Hints should scaffold toward the answer without revealing it. 2–4 hints per node, ordered from subtle to direct.
 
 **Accumulator node**
