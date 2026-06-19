@@ -29,10 +29,6 @@ def main() -> None:
         print("Try reformulating your prompt.")
         sys.exit(1)
 
-    if tree is None:
-        print("Tree generation returned no result. Try again.")
-        sys.exit(1)
-
     # Tree presentation
     print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
     print(f"• Domain: {tree.metadata.domain}")

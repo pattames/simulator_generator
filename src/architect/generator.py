@@ -1,10 +1,13 @@
-from pathlib import Path
-from string import Template
-from anthropic import Anthropic
-from schema.tree import SimulatorTree
-from dotenv import load_dotenv
 import sys
 import json
+from pathlib import Path
+from string import Template
+from datetime import datetime
+
+from anthropic import Anthropic
+from dotenv import load_dotenv
+
+from schema.tree import SimulatorTree
 
 load_dotenv()
 
@@ -16,7 +19,8 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
 
 client = Anthropic()
 
-def generate_tree(user_description: str) -> SimulatorTree | None:
+
+def generate_tree(user_description: str) -> SimulatorTree:
     response = client.messages.parse(
         model="claude-sonnet-4-6",
         max_tokens=16000,        # set high to avoid incomplete trees
@@ -29,7 +33,23 @@ def generate_tree(user_description: str) -> SimulatorTree | None:
         ],
         output_format=SimulatorTree,
     )
-    return response.parsed_output
+    tree = response.parsed_output
+    if tree is None:
+        raise RuntimeError("Tree generation returned no result. Try again.")
+    save_tree(tree)
+    return tree
+
+
+def save_tree(tree: SimulatorTree) -> None:
+    # Create dir
+    tree_dir = Path("generated_trees")
+    tree_dir.mkdir(exist_ok=True)
+    # Create file
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = tree_dir / f"{tree.simulator_id}_{timestamp}.json"
+    path.write_text(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
+    print(f"\n(Decision tree saved to {path})")
+
 
 # To test with user prompt as CLI's argument
 if __name__ == "__main__":
