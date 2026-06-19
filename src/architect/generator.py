@@ -1,14 +1,17 @@
-from pathlib import Path
-from string import Template
-from anthropic import Anthropic
-from schema.tree import SimulatorTree
-from dotenv import load_dotenv
 import sys
 import json
+from pathlib import Path
+from string import Template
+from datetime import datetime
+
+from anthropic import Anthropic
+from dotenv import load_dotenv
+
+from schema.tree import SimulatorTree
 
 load_dotenv()
 
-prompt_template = Template(Path("src/architect/prompt.md").read_text())
+prompt_template = Template(Path("architect/prompt.md").read_text())
 ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
     auto_example=Path("examples/auto_fuel_pump.json").read_text(),
     vet_example=Path("examples/vet_canine.json").read_text(),
@@ -16,7 +19,8 @@ ARCHITECT_SYSTEM_PROMPT = prompt_template.substitute(
 
 client = Anthropic()
 
-def generate_tree(user_description: str) -> SimulatorTree | None:
+
+def generate_tree(user_description: str) -> SimulatorTree:
     response = client.messages.parse(
         model="claude-sonnet-4-6",
         max_tokens=16000,        # set high to avoid incomplete trees
@@ -29,7 +33,37 @@ def generate_tree(user_description: str) -> SimulatorTree | None:
         ],
         output_format=SimulatorTree,
     )
-    return response.parsed_output
+
+    tree = response.parsed_output
+    if tree is None:
+        raise RuntimeError("Tree generation returned no result. Try again.")
+
+    tree_presentation(tree)
+    save_tree(tree)
+    return tree
+
+
+def tree_presentation(tree: SimulatorTree) -> None:
+    print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
+    print(f"• Domain: {tree.metadata.domain}")
+    print(f"• Topic: {tree.metadata.topic}")
+    print("• Learning objectives:")
+    for objective in tree.metadata.learning_objectives:
+        print(f"    - {objective}")
+    print(f"• Hints allowed per stage: {tree.execution_rules.max_hints_per_node}")
+    print(f"• Non-related queries allowed per session: {tree.execution_rules.off_path_max_attempts}")
+    print()
+
+def save_tree(tree: SimulatorTree) -> None:
+    # Create dir
+    tree_dir = Path("generated_trees")
+    tree_dir.mkdir(exist_ok=True)
+    # Create file
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    path = tree_dir / f"{tree.simulator_id}_{timestamp}.json"
+    path.write_text(json.dumps(tree.model_dump(), indent=2, ensure_ascii=False))
+    print(f"(Decision tree saved to {path})\n")
+
 
 # To test with user prompt as CLI's argument
 if __name__ == "__main__":

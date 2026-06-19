@@ -1,190 +1,191 @@
 {
   "simulator_id": "auto_engine_no_start_001",
   "metadata": {
-    "domain": "Diagnóstico mecánico automotriz",
-    "topic": "Diagnóstico de fallas de arranque del motor",
+    "domain": "Automotive mechanical diagnostics",
+    "topic": "Diagnosing engine no-start faults",
     "learning_objectives": [
-      "Aplicar diagnóstico sistemático en problemas de arranque",
-      "Diferenciar fallas eléctricas, de combustible y mecánicas",
-      "Interpretar pruebas de presión de combustible"
+      "Apply systematic diagnosis to starting problems",
+      "Differentiate between electrical, fuel, and mechanical faults",
+      "Interpret fuel pressure tests"
     ]
   },
   "presentation": {
-    "intro": "Un cliente trae su Honda Civic 2015 con 120,000 km al taller. Reporta que esta mañana el motor giró al intentar arrancar pero no encendió. Cuenta que el día anterior cargó gasolina en una estación nueva con precio sospechosamente bajo. Al girar la llave a posición 'on', se percibe un leve olor a combustible en la cabina.",
+    "intro": "A customer brings their 2015 Honda Civic with 120,000 km into the shop. They report that this morning the engine cranked when they tried to start it but wouldn't fire up. They mention that the day before, they filled up at an unfamiliar station with a suspiciously low price. When the key is turned to the 'on' position, a faint smell of fuel can be detected in the cabin.",
     "context": [
       {
-        "label": "Vehículo",
-        "value": "Honda Civic 2015, 1.8L gasolina, 120,000 km"
+        "label": "Vehicle",
+        "value": "2015 Honda Civic, 1.8L gasoline, 120,000 km"
       },
       {
-        "label": "Síntoma principal",
-        "value": "Motor cranquea pero no enciende"
+        "label": "Main symptom",
+        "value": "Engine cranks but won't start"
       },
       {
-        "label": "Historial reciente",
-        "value": "Cargó combustible en estación no habitual el día anterior"
+        "label": "Recent history",
+        "value": "Filled up at an unfamiliar station the day before"
       }
     ]
   },
   "decision_nodes": [
     {
       "id": "n1",
-      "stage": "Inspección inicial y verificación de síntomas",
-      "available_info": "Al girar la llave: tablero se ilumina normalmente, motor de arranque gira a velocidad normal, no se escucha el zumbido característico de la bomba de combustible al activar el switch. Olor leve a gasolina cerca del tanque.\n\n¿Por dónde empezarías el diagnóstico?",
+      "stage": "Initial inspection and symptom verification",
+      "available_info": "When the key is turned on: the dashboard lights up normally, the starter cranks the engine at normal speed, and the characteristic fuel pump priming hum is not heard when the ignition is switched on. Faint gasoline smell near the tank.\n\nWhere would you begin the diagnosis?",
       "expected_actions": [
         {
           "action_keywords": [
-            "inspección visual",
-            "revisar fugas",
-            "buscar fugas",
-            "checar visual"
+            "visual inspection",
+            "check for leaks",
+            "look for leaks",
+            "visual check"
           ],
-          "feedback": "✅ Buena práctica. La inspección visual descarta fugas evidentes y problemas obvios. No se observan fugas en mangueras, conexiones eléctricas en buen estado, no hay olor a combustible en el compartimento del motor — solo en zona del tanque.",
+          "feedback": "✅ Good practice. A visual inspection rules out obvious leaks and problems. No leaks are seen at the hoses, the electrical connections are in good condition, and there is no fuel smell in the engine compartment — only near the tank.",
           "next": "n2"
         },
         {
           "action_keywords": [
-            "escuchar bomba",
-            "switch on",
-            "verificar zumbido bomba",
-            "activar switch"
+            "listen for pump",
+            "key on",
+            "check pump prime",
+            "cycle ignition on"
           ],
-          "feedback": "✅ Excelente instinto. Al girar a switch on, normalmente debes escuchar la bomba activarse por 2-3 segundos. En este caso, no se escucha el zumbido característico — un hallazgo muy importante.",
+          "feedback": "✅ Excellent instinct. When you switch the ignition on, you should normally hear the pump prime for 2-3 seconds. In this case, the characteristic hum is not heard — a very important finding.",
           "next": "n2"
         },
         {
           "action_keywords": [
             "scanner",
             "obd",
-            "código de falla",
-            "lector"
+            "fault code",
+            "code reader"
           ],
-          "feedback": "✅ Es una herramienta útil pero prematura sin antes verificar lo básico. Aun así, conectaste el escáner: aparece código P0087 (presión del riel de combustible muy baja). Continuemos.",
+          "feedback": "✅ It's a useful tool, but premature before checking the basics. Even so, you hooked up the scanner: code P0087 appears (fuel rail/system pressure too low). Let's continue.",
           "next": "n2",
           "penalty": "minor"
         }
       ],
       "hints": [
-        "Antes de conectar herramientas de diagnóstico, ¿qué información puedes obtener con tus sentidos?",
-        "El motor cranquea normalmente — eso ya descarta varios sistemas. ¿Cuáles?"
+        "Before hooking up diagnostic tools, what information can you gather with your senses?",
+        "The engine cranks normally — that already rules out several systems. Which ones?"
       ]
     },
     {
       "id": "n2",
-      "stage": "Diagnóstico diferencial",
-      "available_info": "Hallazgos clave: motor cranquea normalmente (sistema eléctrico y de arranque OK), bomba de combustible no se activa al switch on, código P0087 (presión baja del riel), historial de combustible de origen sospechoso.\n\n¿De qué sistema sospecharías?",
+      "stage": "Differential diagnosis",
+      "available_info": "Key findings: engine cranks normally (electrical and starting systems OK), the fuel pump does not prime when the ignition is switched on, code P0087 (low rail pressure), and a history of fuel from a questionable source.\n\nWhich system would you suspect?",
       "expected_actions": [
         {
           "action_keywords": [
-            "sistema combustible",
-            "bomba combustible",
+            "fuel system",
             "fuel pump",
-            "presión combustible"
+            "fuel delivery",
+            "fuel pressure"
           ],
-          "feedback": "✅ Correcto. Todos los hallazgos apuntan al sistema de combustible: ausencia de zumbido de bomba, código de presión baja, y el historial de gasolina de mala calidad que pudo dañar la bomba. ¿Cómo lo confirmarías?",
+          "feedback": "✅ Correct. All the findings point to the fuel system: no pump hum, a low-pressure code, and a history of poor-quality gasoline that could have damaged the pump. How would you confirm it?",
           "next": "n3"
         },
         {
           "action_keywords": [
-            "batería",
-            "alternador",
-            "sistema eléctrico",
-            "cables"
+            "battery",
+            "alternator",
+            "electrical system",
+            "wiring"
           ],
-          "feedback": "❌ Improbable. Si fuera un problema eléctrico mayor, el motor no cranquearía a velocidad normal o tendrías otros síntomas (luces tenues, accesorios fallando). El sistema eléctrico está respondiendo bien.",
+          "feedback": "❌ Unlikely. If it were a major electrical problem, the engine wouldn't crank at normal speed, or you'd see other symptoms (dim lights, accessories failing). The electrical system is responding well.",
           "next": "n2",
           "penalty": "minor"
         },
         {
           "action_keywords": [
-            "motor de arranque",
+            "starter motor",
             "starter",
-            "marcha",
-            "solenoide"
+            "cranking motor",
+            "ignition switch",
+            "solenoid"
           ],
-          "feedback": "❌ El motor de arranque gira normalmente al cranquear — eso descarta una falla en él. El problema está después del arranque, en el ciclo de combustión.",
+          "feedback": "❌ The starter cranks the engine normally — that rules out a fault in it. The problem occurs after cranking, in the combustion cycle.",
           "next": "n2",
           "penalty": "moderate"
         }
       ],
       "hints": [
-        "El motor cranquea pero no enciende. Eso significa que el sistema de arranque funciona — falta otra cosa.",
-        "Para encender, un motor necesita tres cosas: chispa, aire y combustible. ¿Cuál de las tres está fallando según los síntomas?"
+        "The engine cranks but won't start. That means the starting system works — something else is missing.",
+        "To run, an engine needs three things: spark, air, and fuel. Which of the three is failing based on the symptoms?"
       ]
     },
     {
       "id": "n3",
-      "stage": "Confirmación diagnóstica",
-      "available_info": "Pruebas disponibles del sistema de combustible.\n\n¿Qué prueba realizarías para confirmar tu sospecha?",
+      "stage": "Diagnostic confirmation",
+      "available_info": "Fuel system tests available.\n\nWhat test would you perform to confirm your suspicion?",
       "expected_actions": [
         {
           "action_keywords": [
-            "prueba presión combustible",
-            "manómetro combustible",
-            "test presión",
-            "fuel pressure test"
+            "fuel pressure test",
+            "fuel pressure gauge",
+            "pressure test",
+            "check fuel pressure"
           ],
-          "feedback": "✅ Correcto. La prueba de presión de combustible es el gold standard. Resultado: 0 psi al intentar arrancar (esperado: 50-55 psi). Confirma falla total de la bomba. La gasolina contaminada probablemente dañó la bomba.",
+          "feedback": "✅ Correct. The fuel pressure test is the gold standard. Result: 0 psi while trying to start (expected: 50-55 psi). This confirms total pump failure. The contaminated gasoline most likely damaged the pump.",
           "next": "accumulator"
         },
         {
           "action_keywords": [
-            "inspección visual tanque",
-            "ver tanque",
-            "inspeccionar combustible"
+            "visual tank inspection",
+            "check the tank",
+            "inspect fuel"
           ],
-          "feedback": "❌ Una inspección del tanque puede dar pistas sobre la calidad del combustible, pero no te dice si la bomba funciona. Necesitas una prueba dinámica de presión.",
+          "feedback": "❌ A tank inspection can give clues about fuel quality, but it won't tell you whether the pump is working. You need a dynamic pressure test.",
           "next": "n3",
           "penalty": "minor"
         }
       ],
       "hints": [
-        "Necesitas medir directamente lo que sospechas que está fallando. ¿Con qué herramienta mides presión hidráulica de combustible?"
+        "You need to directly measure what you suspect is failing. What tool do you use to measure fuel pressure?"
       ]
     }
   ],
   "accumulator": {
-    "stage": "Plan de reparación",
-    "available_info": "Has confirmado: falla de la bomba de combustible, probablemente por contaminación con combustible de mala calidad. Diseña un plan de reparación completo que aborde tanto la falla actual como la prevención de daños similares en los componentes nuevos.",
+    "stage": "Repair plan",
+    "available_info": "You have confirmed: a fuel pump failure, most likely caused by contamination from poor-quality fuel. Design a complete repair plan that addresses both the current fault and the prevention of similar damage to the new components.",
     "required_components": [
-      "reemplazo bomba combustible",
-      "limpieza sistema combustible",
-      "reemplazo filtro combustible"
+      "fuel pump replacement",
+      "fuel system cleaning",
+      "fuel filter replacement"
     ],
     "component_feedback": [
       {
-        "component": "reemplazo bomba combustible",
-        "feedback": "Bien. Reemplazar la bomba dañada es esencial. ¿Qué más?"
+        "component": "fuel pump replacement",
+        "feedback": "Good. Replacing the damaged pump is essential. What else?"
       },
       {
-        "component": "limpieza sistema combustible",
-        "feedback": "Correcto. Si el combustible contaminado ya pasó por el sistema, hay que drenar el tanque y limpiar las líneas. ¿Qué más?"
+        "component": "fuel system cleaning",
+        "feedback": "Correct. If the contaminated fuel has already passed through the system, you need to drain the tank and clean the lines. What else?"
       },
       {
-        "component": "reemplazo filtro combustible",
-        "feedback": "Excelente. El filtro habrá retenido contaminantes y debe reemplazarse para proteger la bomba nueva. ¿Qué más?"
+        "component": "fuel filter replacement",
+        "feedback": "Excellent. The filter will have trapped contaminants and must be replaced to protect the new pump. What else?"
       }
     ],
     "on_complete": "terminal_success",
     "hints": [
-      "Reemplazar solo la pieza dañada no es suficiente — hay que tratar la causa y proteger los componentes nuevos.",
-      "Piensa en tres niveles: (1) la pieza fallada, (2) el contaminante que la dañó, (3) los componentes intermedios que también pudieron contaminarse."
+      "Replacing only the damaged part isn't enough — you have to address the cause and protect the new components.",
+      "Think in three layers: (1) the failed part, (2) the contaminant that damaged it, (3) the intermediate components that may also have become contaminated."
     ]
   },
   "terminal_success": {
     "outcome": "success",
-    "diagnosis": "Falla de bomba de combustible por contaminación de gasolina",
-    "feedback_template": "Has resuelto el caso correctamente. Identificaste la falla de la bomba de combustible mediante diagnóstico sistemático y propusiste un plan de reparación integral que incluye reemplazo de bomba, limpieza del sistema y reemplazo del filtro.\n\nReferencias técnicas sugeridas:\n- Manual de servicio Honda Civic 2015, sección sistema de combustible\n- ASE Fuel Systems Diagnosis study guide"
+    "diagnosis": "Fuel pump failure due to gasoline contamination",
+    "feedback_template": "You've solved the case correctly. You identified the fuel pump failure through systematic diagnosis and proposed a comprehensive repair plan that includes pump replacement, system cleaning, and filter replacement.\n\nSuggested technical references:\n- 2015 Honda Civic service manual, fuel system section\n- ASE Fuel Systems Diagnosis study guide"
   },
   "terminal_failure": {
     "outcome": "failure",
-    "feedback_template": "El diagnóstico no se completó adecuadamente. La falla correcta era una bomba de combustible dañada por contaminación.\n\nTe recomendamos repasar el patrón clásico de falla de bomba (cranquea pero no enciende + ausencia de zumbido al switch on) y el uso del manómetro de presión de combustible."
+    "feedback_template": "The diagnosis wasn't completed properly. The correct fault was a fuel pump damaged by contamination.\n\nWe recommend reviewing the classic pump-failure pattern (cranks but won't start + no pump prime at key on) and the use of the fuel pressure gauge."
   },
   "execution_rules": {
     "hint_path_def": "The user is engaged with the case but stuck — they're reasoning incorrectly, reasoning incompletely, asking for help, or requesting clarification about case details",
     "max_hints_per_node": 3,
     "off_path_def": "The user's message is entirely unrelated to the case",
-    "default_off_path_response": "Esa pregunta no corresponde a este momento del diagnóstico. Concentrémonos en el caso del Honda Civic.",
+    "default_off_path_response": "That question doesn't relate to this point in the diagnosis. Let's focus on the Honda Civic case.",
     "off_path_max_attempts": 3
   }
 }
