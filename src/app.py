@@ -28,15 +28,6 @@ def main() -> None:
         print(f"Tree not generated properly: {e}")
         print("Try reformulating your prompt.")
         sys.exit(1)
-
-    # Tree presentation
-    print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
-    print(f"• Domain: {tree.metadata.domain}")
-    print(f"• Topic: {tree.metadata.topic}")
-    print("• Learning Objectives:")
-    for objective in tree.metadata.learning_objectives:
-        print(f"    - {objective}")
-    print()
     
     # Choice to continue or exit
     choice = input("[c]ontinue or [q]uit? ").strip().lower()

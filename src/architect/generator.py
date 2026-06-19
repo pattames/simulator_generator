@@ -33,12 +33,24 @@ def generate_tree(user_description: str) -> SimulatorTree:
         ],
         output_format=SimulatorTree,
     )
+
     tree = response.parsed_output
     if tree is None:
         raise RuntimeError("Tree generation returned no result. Try again.")
+
+    tree_presentation(tree)
     save_tree(tree)
     return tree
 
+
+def tree_presentation(tree: SimulatorTree) -> None:
+    print(f"\n{'-' * 15} YOUR SIMULATOR: {'-' * 15}\n")
+    print(f"• Domain: {tree.metadata.domain}")
+    print(f"• Topic: {tree.metadata.topic}")
+    print("• Learning Objectives:")
+    for objective in tree.metadata.learning_objectives:
+        print(f"    - {objective}")
+    print()
 
 def save_tree(tree: SimulatorTree) -> None:
     # Create dir
