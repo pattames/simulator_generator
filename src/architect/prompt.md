@@ -27,6 +27,7 @@ $vet_example
 **Decision nodes**
 - Must be an ordered list of 3-5 nodes
 - Each decision node has an id field following the pattern n1, n2, n3, …, matching its position in the list.
+- Each decision node must ask for exactly one atomic answer — a single action, choice, or association. Do NOT create a node whose correct answer is a list, a set of pairings, or several distinct facts (e.g. "match each of these four objects to its respective movie character", "name all three heroes").
 - The available_info field should not imply that the user has to give multiple answers to move on to the next node.
 - For each, include 2–4 expected_actions: at least one correct path (no penalty, advances to the next node) and one or more plausible wrong answers with appropriate penalties that loop back to the same node.
 - Penalty levels:
