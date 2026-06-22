@@ -1,6 +1,7 @@
 # Simulator Generator v1
 
 CLI tool built with Python, Pydantic, Groq API and Claude API.
+
 *note:* Due to the use of third party LLMs, API keys are required.
 
 ## Setup
